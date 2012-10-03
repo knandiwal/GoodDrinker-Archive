@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 2012-10-03:v0.01
+# 2012-10-03:v0.03
 # GUID: {00000-11111-22222-33333-44449}
 
 CACHE:
@@ -22,11 +22,7 @@ styles/fonts/fontawesome-webfont.ttf
 #styles/fonts/fontawesome-webfont.woff
 
 #javascript files
-scripts/libraries-min.js
-scripts/analytics.js
-scripts/helpers.js
-scripts/en-us.js
-scripts/app.js
+scripts/app-compiled-min.js
 
 NETWORK:
 https://ssl.google-analytics.com
