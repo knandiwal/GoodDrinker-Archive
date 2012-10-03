@@ -270,6 +270,8 @@ GDrinker.StatusView = Em.View.extend({
         return eTime.humanize(false);
       } else if (eTime.hours() > 1) {
         result += eTime.hours() + " hours ";
+      } else if (eTime.hours() == 1) {
+        result += " 1 hour ";
       }
       result += Math.floor(eTime.minutes()) + ":" + GDrinker.PadTime(eTime.seconds());
       return result;
