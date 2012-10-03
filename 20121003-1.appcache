@@ -1,6 +1,6 @@
 CACHE MANIFEST
-# 2012-10-02:v0.04
-# GUID: {00000-11111-22222-33333-44448}
+# 2012-10-03:v0.01
+# GUID: {00000-11111-22222-33333-44449}
 
 CACHE:
 #images
@@ -22,11 +22,9 @@ styles/fonts/fontawesome-webfont.ttf
 #styles/fonts/fontawesome-webfont.woff
 
 #javascript files
-scripts/jquery-1.7.2.min.js
-scripts/ember-0.9.8.1.min.js
-scripts/bootstrap.min.js
-scripts/lawnchair-0.6.1.min.js
-scripts/moment-1.7.0.min.js
+scripts/libraries-min.js
+scripts/analytics.js
+scripts/helpers.js
 scripts/en-us.js
 scripts/app.js
 

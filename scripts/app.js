@@ -36,6 +36,7 @@ GDrinker.QuickAdd = function(evt) {
   item.description = GDrinker.Settings.DrinkDescription;
   item.amount = GDrinker.Settings.DrinkSize;
   GDrinker.dataController.addItem(item, true);
+  GDrinker.Analytics.trackEvent("Drink", "QuickAdd", GDrinker.Settings.DrinkSize);
 };
 
 GDrinker.DlgShowDefaults = {
@@ -48,24 +49,28 @@ GDrinker.FirstRun = function() {
   GDrinker.Settings.FirstRun = false;
   localStorage.GDrinkerSettings = JSON.stringify(GDrinker.Settings);
   $("#dlgFirstRun").modal(GDrinker.DlgShowDefaults);
+  GDrinker.Analytics.trackEvent("ShowDialog", "FirstRun");
 };
 
 GDrinker.ToggleAddDrinkDlg = function(evt) {
   var sema = GDrinker.dataController.get('dlgAddVisible') + 1;
   GDrinker.dataController.set('dlgAddVisible', sema);
   $("#dlgAddDrink").modal(GDrinker.DlgShowDefaults);
+  GDrinker.Analytics.trackEvent("ShowDialog", "AddDrink");
 };
 
 GDrinker.ToggleHistoryDlg = function(evt) {
   var sema = GDrinker.dataController.get('dlgHistoryVisible') + 1;
   GDrinker.dataController.set('dlgHistoryVisible', sema);
   $("#dlgHistory").modal(GDrinker.DlgShowDefaults);
+  GDrinker.Analytics.trackEvent("ShowDialog", "History");
 };
 
 GDrinker.ToggleSettingsDlg = function(evt) {
   var sema = GDrinker.dataController.get('dlgSettingsVisible') + 1;
   GDrinker.dataController.set('dlgSettingsVisible', sema);
   $("#dlgSettings").modal(GDrinker.DlgShowDefaults);
+  GDrinker.Analytics.trackEvent("ShowDialog", "Settings");
 };
 
 GDrinker.Settings = null;
@@ -301,26 +306,31 @@ GDrinker.DrinkListView = Em.View.extend({
   remove: function(evt) {
     var drink = this.get('content');
     GDrinker.dataController.removeItem(drink);
+    GDrinker.Analytics.trackEvent("Drink", "Remove");
   }
 });
 
 GDrinker.SettingsView = Em.View.extend({
   classNames: ['modal', 'hide'],
+  test: function() {
+  },
   close: function() {
     $('#dlgSettings').modal('hide');
     $("#dlgSettings .control-group").removeClass("error");
     $("#dlgSettings .btn-primary").removeAttr("disabled");
   },
   save: function() {
-    var isValid = GDrinkerHelper.ValidateNumberInput("#setTimeBetween", true) &&
-      GDrinkerHelper.ValidateNumberInput("#setDrinkSize", true) &&
-      GDrinkerHelper.ValidateRequiredTextInput("#setDesc", true);
+    var isValid = GDrinker.Helpers.ValidateNumberInput("#setTimeBetween", true) &&
+      GDrinker.Helpers.ValidateNumberInput("#setDrinkSize", true) &&
+      GDrinker.Helpers.ValidateRequiredTextInput("#setDesc", true);
 
     if (isValid) {
       GDrinker.Settings.TimeBetweenDrinks = $('#setTimeBetween').val();
       GDrinker.Settings.DrinkSize = $('#setDrinkSize').val();
       GDrinker.Settings.DrinkDescription = $('#setDesc').val();
       localStorage.GDrinkerSettings = JSON.stringify(GDrinker.Settings);
+      GDrinker.Analytics.trackEvent("Settings", "TimeBetween", GDrinker.Settings.TimeBetweenDrinks);
+      GDrinker.Analytics.trackEvent("Settings", "DrinkSize", GDrinker.Settings.DrinkSize);
       this.close();
     }
   },
@@ -334,13 +344,16 @@ GDrinker.SettingsView = Em.View.extend({
     return GDrinker.Settings.DrinkDescription;
   }.property('GDrinker.dataController.dlgSettingsVisible'),
   clearAll: function(evt) {
-    GDrinkerHelper.confirm(gdrinker_strings.clear_msg,
+    GDrinker.Helpers.confirm(gdrinker_strings.clear_msg,
       gdrinker_strings.clear_title,
       function(butIndex) {
         if (butIndex === 2) {
           GDrinker.dataController.set('lastDrink', null);
           GDrinker.dataController.set('content', []);
           store.nuke();
+          GDrinker.Analytics.trackEvent("ClearSettings", "true");
+        } else {
+          GDrinker.Analytics.trackEvent("ClearSettings", "false");
         }
     });
   }
@@ -354,10 +367,10 @@ GDrinker.AddDrinkView = Em.View.extend({
     $("#dlgAddDrink .btn-primary").removeAttr("disabled");
   },
   save: function() {
-    var isValid = GDrinkerHelper.ValidateRequiredTextInput("#addDesc", true) &&
-      GDrinkerHelper.ValidateNumberInput("#addAmount", true) &&
-      GDrinkerHelper.ValidateTimeInput("#addTime", true) &&
-      GDrinkerHelper.ValidateDateInput("#addDate", true);
+    var isValid = GDrinker.Helpers.ValidateRequiredTextInput("#addDesc", true) &&
+      GDrinker.Helpers.ValidateNumberInput("#addAmount", true) &&
+      GDrinker.Helpers.ValidateTimeInput("#addTime", true) &&
+      GDrinker.Helpers.ValidateDateInput("#addDate", true);
 
     if (isValid) {
       var item = {};
@@ -367,6 +380,7 @@ GDrinker.AddDrinkView = Em.View.extend({
       item.amount = $("#addAmount").val();
       GDrinker.dataController.addItem(item, true);
       this.close();
+      GDrinker.Analytics.trackEvent("Drink", "Add", item.amount);
     }
   },
   drinkSize: function() {
@@ -433,27 +447,27 @@ GDrinker.NumberInput = Ember.TextField.extend({
   attributeBindings: ['min', 'max', 'step'],
   change: function(evt) {
     var id = "#" + evt.srcElement.id;
-    GDrinkerHelper.ValidateNumberInput(id, true);
+    GDrinker.Helpers.ValidateNumberInput(id, true);
   }
 });
 
 GDrinker.DateInput = Ember.TextField.extend({
   change: function(evt) {
     var id = "#" + evt.srcElement.id;
-    GDrinkerHelper.ValidateDateInput(id, true);
+    GDrinker.Helpers.ValidateDateInput(id, true);
   }
 });
 
 GDrinker.TimeInput = Ember.TextField.extend({
   change: function(evt) {
     var id = "#" + evt.srcElement.id;
-    GDrinkerHelper.ValidateTimeInput(id, true);
+    GDrinker.Helpers.ValidateTimeInput(id, true);
   }
 });
 
 GDrinker.RequiredTextInput = Ember.TextField.extend({
   change: function(evt) {
     var id = "#" + evt.srcElement.id;
-    GDrinkerHelper.ValidateRequiredTextInput(id, true);
+    GDrinker.Helpers.ValidateRequiredTextInput(id, true);
   }
 });

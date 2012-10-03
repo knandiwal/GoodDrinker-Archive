@@ -1,8 +1,10 @@
 /* wrappers.js */
 
-var GDrinkerHelper = GDrinkerHelper || {};
+var GDrinker = GDrinker || {};
+GDrinker.Helpers = {};
 
-GDrinkerHelper.confirm = function(msg, title, callback) {
+
+GDrinker.Helpers.confirm = function(msg, title, callback) {
   if (navigator.notification && navigator.notification.confirm) {
     navigator.notification.confirm(msg, callback, title, "Cancel,OK");
   } else {
@@ -17,7 +19,7 @@ GDrinkerHelper.confirm = function(msg, title, callback) {
   }
 };
 
-GDrinkerHelper.setErrorOnForm = function(elementId, isValid) {
+GDrinker.Helpers.setErrorOnForm = function(elementId, isValid) {
   if (isValid) {
     $(elementId).parents(".control-group").removeClass("error");
     $(elementId).parents(".ember-view .modal").find(".btn-primary").removeAttr("disabled");
@@ -27,7 +29,7 @@ GDrinkerHelper.setErrorOnForm = function(elementId, isValid) {
   }
 };
 
-GDrinkerHelper.ValidateNumberInput = function(elementId, setError) {
+GDrinker.Helpers.ValidateNumberInput = function(elementId, setError) {
   var value = $(elementId).val();
   var isValid = (value - 0) == value && value.length > 0;
   var min = $(elementId).attr("min") || "";
@@ -43,24 +45,24 @@ GDrinkerHelper.ValidateNumberInput = function(elementId, setError) {
     }
   }
   if (setError) {
-    GDrinkerHelper.setErrorOnForm(elementId, isValid);
+    GDrinker.Helpers.setErrorOnForm(elementId, isValid);
   }
   return isValid;
 };
 
-GDrinkerHelper.ValidateDateInput = function(elementId, setError) {
+GDrinker.Helpers.ValidateDateInput = function(elementId, setError) {
   var value = $(elementId).val();
   var isValid = value.length > 0;
   if (isValid && !moment(value, "YYYY-MM-DD").isValid()) {
     isValid = false;
   }
   if (setError) {
-    GDrinkerHelper.setErrorOnForm(elementId, isValid);
+    GDrinker.Helpers.setErrorOnForm(elementId, isValid);
   }
   return isValid;
 };
 
-GDrinkerHelper.ValidateTimeInput = function(elementId, setError) {
+GDrinker.Helpers.ValidateTimeInput = function(elementId, setError) {
   var value = $(elementId).val();
   var isValid = value.length > 0;
   if (isValid && value === 0) {
@@ -70,16 +72,16 @@ GDrinkerHelper.ValidateTimeInput = function(elementId, setError) {
     isValid = false;
   }
   if (setError) {
-    GDrinkerHelper.setErrorOnForm(elementId, isValid);
+    GDrinker.Helpers.setErrorOnForm(elementId, isValid);
   }
   return isValid;
 };
 
-GDrinkerHelper.ValidateRequiredTextInput = function(elementId, setError) {
+GDrinker.Helpers.ValidateRequiredTextInput = function(elementId, setError) {
   var value = $(elementId).val();
   var isValid = value.length > 0;
   if (setError) {
-    GDrinkerHelper.setErrorOnForm(elementId, isValid);
+    GDrinker.Helpers.setErrorOnForm(elementId, isValid);
   }
   return isValid;
 };
