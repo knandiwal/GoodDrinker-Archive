@@ -15,4 +15,4 @@
 // @codekit-append "en-us.js"
 // @codekit-append "app.js"
 // @codekit-append "helpers.js"
-// @codekit-append "analytics.js"
+// @codekit-append "analytics-web.js"
