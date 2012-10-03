@@ -1,0 +1,243 @@
+<!DOCTYPE html> 
+<html manifest="20121002-1.appcache">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>GoodDrinker</title>
+    
+    <meta name="description" content="Track your drinking habits with GoodDrinker">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="web-assets/GD-icon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="web-assets/GD-icon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="web-assets/GD-icon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="web-assets/GD-icon-57.png.png">
+    <link rel="shortcut icon" href="web-assets/favicon.ico">
+    
+    <link rel="stylesheet" type="text/css" href="styles/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/custom.css">
+    
+  </head> 
+
+  <body> 
+    <script type="text/x-handlebars">
+      {{#view GDrinker.StatusView}}
+        <h1>{{message}}</h1>
+        <div><b>{{timeSince}}</b> since your last drink</div>
+        <div>You can have another drink <b>{{drinkAt}}</b></div>
+      {{/view}}
+    </script>
+
+    <script type="text/x-handlebars">
+      <table id="drinkList" class="table-striped">
+        <tbody>
+          {{#each GDrinker.dataController}}
+            {{#view GDrinker.DrinkListView contentBinding="this"}}
+                <td class="small"><img src="img/wine.png"></td>
+                <td><h3>{{content.description}}</h3>{{drinkTime}}</td>
+                <td class="small"><span class="badge">{{content.amount}}</span></td>
+                <td class="small"><button {{action remove}} class="btn"><i class="icon-remove-sign icon-large"></i></button></td>
+            {{/view}}
+          {{/each}}
+        </tbody>
+      </table>
+    </script>
+    
+    <footer>
+      <div class="navbar navbar-fixed-bottom">
+        <div class="navbar-inner">
+          <div class="container-fluid">
+            <div class="btn-group">
+              <button id="btnQuickAdd" class="btn btn-inverse">
+                <i class="icon-plus-sign icon-large"></i><br>Fast Add
+              </button>
+              <button id="btnAdd" class="btn btn-inverse">
+                <i class="icon-plus icon-large"></i><br>Add
+              </button>
+              <button id="btnHistory" class="btn btn-inverse">
+                <i class="icon-dashboard icon-large"></i><br>History
+              </button>
+              <button id="btnSettings" class="btn btn-inverse">
+                <i class="icon-cogs icon-large"></i><br>Settings
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="text/x-handlebars">
+    {{#view GDrinker.AddDrinkView id="dlgAddDrink"}}
+      <div class="modal-header">
+        <button type="button" {{action close}} class="close"><i class="icon-remove"></i></button>
+        <h3>Add a drink</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="control-group">
+            <label class="control-label" for="addDesc">Description</label>
+            <div class="controls">
+              {{view GDrinker.RequiredTextInput type="text" name="addDesc" id="addDesc" class="spanMiniModal" placeholder="Type something..." valueBinding="drinkDescription"}}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="addAmount">Amount</label>
+            <div class="controls">
+              {{view GDrinker.NumberInput type="number" min="0.25" step="0.25" name="addAmount" id="addAmount" class="spanMiniModal" placeholder="2" valueBinding="drinkSize"}}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="addTime">Time</label>
+            <div class="controls">
+              {{view GDrinker.TimeInput type="time" name="addTime" id="addTime" class="spanMiniModal" placeholder="4:00 pm" valueBinding="currentTime"}}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="addDate">Date</label>
+            <div class="controls">
+              {{view GDrinker.DateInput type="date" name="addDate" id="addDate" class="spanMiniModal" placeholder="mm/dd/yyyy" valueBinding="currentDate"}}
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button {{action close}} type="button" class="btn">Close</button>
+        <button {{action save}} type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    {{/view}}
+    </script>
+
+    <script type="text/x-handlebars">
+    {{#view GDrinker.SettingsView id="dlgSettings"}}
+      <div class="modal-header">
+        <button type="button" {{action close}} class="close">&times;</button>
+        <h3>Settings</h3>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="control-group">
+            <label class="control-label" for="setTimeBetween">Time Between Drinks</label>
+            <div class="controls">
+              {{view GDrinker.NumberInput type="number" name="setTimeBetween" id="setTimeBetween" min="1" class="spanMiniModal" placeholder="Time Between Drinks" valueBinding="timeBetween"}}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="setDrinkSize">Default Drink Size</label>
+            <div class="controls">
+              {{view GDrinker.NumberInput type="number" min="0.25" step="0.25" class="spanMiniModal" id="setDrinkSize" name="setDrinkSize" placeholder="Drink size" valueBinding="drinkSize"}}
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="setDesc">Default Description</label>
+            <div class="controls">
+              {{view GDrinker.RequiredTextInput type="text" name="setDesc" id="setDesc" class="spanMiniModal" placeholder="Type something..." valueBinding="drinkDescription"}}
+            </div>
+          </div>
+
+          <label class="control-label" for="setErase">Clear All Data</label>
+          <button {{action clearAll}} id="btnDlgSetErase" class="btn btn-danger" type="button" ><i class="icon-trash icon-large"></i> Erase</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button {{action close}} type="button" class="btn">Close</button>
+        <button {{action save}} type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    {{/view}}
+    </script>
+
+    <script type="text/x-handlebars">
+    {{#view GDrinker.HistoryView id="dlgHistory"}}
+      <div class="modal-header">
+        <button {{action close}} type="button" class="close">&times;</button>
+        <h3>History</h3>
+      </div>
+      <div class="modal-body">
+        <table id="tableHistory" class="table-striped table-bordered" style="width:100%;">
+          <thead>
+            <tr>
+              <th></th>
+              <th>#</th>
+              <th>qty</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Last 24 hours</td>
+              <td class="small">{{drinks24}}</td>
+              <td class="small">{{qty24}}</td>
+            </tr>
+            <tr>
+              <td>Last 48 hours</td>
+              <td class="small">{{drinks48}}</td>
+              <td class="small">{{qty48}}</td>
+            </tr>
+            <tr>
+              <td>Last 72 hours</td>
+              <td class="small">{{drinks72}}</td>
+              <td class="small">{{qty72}}</td>
+            </tr>
+            <tr>
+              <td>Last week</td>
+              <td class="small">{{drinks168}}</td>
+              <td class="small">{{qty168}}</td>
+            </tr>
+            <tr>
+              <td>Last month</td>
+              <td class="small">{{drinks720}}</td>
+              <td class="small">{{qty720}}</td>
+            </tr>
+            <tr>
+              <td>All time</td>
+              <td class="small">{{drinksAll}}</td>
+              <td class="small">{{qtyAll}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button {{action close}} type="button" class="btn btn-primary">Close</button>
+      </div>
+    {{/view}}
+    </script>
+
+    <div class="modal hide" id="dlgFirstRun">
+      <div class="modal-header">
+        <button id="btnDlgFRClose1" type="button" data-dismiss="modal" class="close">&times;</button>
+        <h3>Welcome</h3>
+      </div>
+      <div class="modal-body">
+        <p>
+          Welcome to GoodDrinker! Please remember to always drink responsibly.  
+          This app is not meant to provide any medical or legal advice about how
+          drunk you are, but instead only to keep track of how many drinks you've
+          had and when your last drink was.
+        </p>
+        <p>
+          Please, be smart, <strong class="text-red">never</strong> drink and drive.  
+        </p>
+        <p>
+          The developers of GoodDrinker are not liable for any good or bad decisions
+          you make, or the outcome of those decisions.  Enjoy responsibility!
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-primary">Got it!</button>
+      </div>
+    </div>
+
+    <!--
+    <script type="text/javascript" src="scripts/cordova-2.1.0.js"></script>
+    -->
+    <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="scripts/ember-0.9.8.1.min.js"></script>
+    <script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="scripts/lawnchair-0.6.1.min.js"></script>
+    <script type="text/javascript" src="scripts/moment-1.7.0.min.js"></script>
+    <script type="text/javascript" src="scripts/en-us.js"></script>
+    <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/wrappers.js"></script>
+    <script type="text/javascript" src="scripts/analytics-web.js"></script>
+
+  </body>
+</html>

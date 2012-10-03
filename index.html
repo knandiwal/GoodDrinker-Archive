@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>GoodDrinker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GoodDrinker, GDrinker, Good Drinker">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="styles/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 60px;
+        padding-bottom: 40px;
+      }
+      .screenshot {
+        width: 175px;
+        padding: 10px;
+      }
+      .appicon {
+        float: right;
+        margin-left: 20px;
+        margin-top: 10px;
+      }
+      @media only screen and (max-device-width: 480px) {
+        .hero-unit h1 {
+          font-size: 40px;
+        }
+        .hero-unit p {
+          font-size: 20px;
+        }
+        .screenshot {
+          width: 130px;
+        }
+      }
+    </style>
+    <link href="styles/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="web-assets/GD-icon-144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="web-assets/GD-icon-114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="web-assets/GD-icon-72.png">
+    <link rel="apple-touch-icon-precomposed" href="web-assets/GD-icon-57.png.png">
+    <link rel="shortcut icon" href="web-assets/favicon.ico">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">GoodDrinker</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="drinkr.html">Web Version</a></li>
+              <li><a href="#getIt">Get GoodDrinker</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+
+      <div class="hero-unit">
+        <h1>GoodDrinker</h1>
+        <p>Keep tabs on how many drinks you've had and when you had your last drink!</p>
+        <p>
+          <a class="btn btn-primary btn-large" href="#about">Learn more &raquo;</a>
+          <a class="btn btn-success btn-large" href="#getIt">Get it &raquo;</a>
+        </p>
+      </div>
+    
+      <!-- Example row of columns -->
+      <div class="row">
+        <a name="about"></a>
+        <div class="span12">
+          <img src="web-assets/GD-icon-144.png" class="appicon">
+          <h2>About GoodDrinker</h2>
+          <p>
+            GoodDrinker helps moderate your drinking habits by keeping track 
+            of your last drink, and recommending a minimum time between drinks.  
+          </p>
+          <p>
+            Not only will GoodDrinker help you to pace your drinking, you can 
+            also see your history and consumption patters including how many 
+            drinks you've had in the last 24, 48, or 72 hours as well as all the
+            drinks that you've ever recorded in GoodDrinker.
+          </p>
+          <p>
+            <img src="web-assets/ss1.png" class="screenshot">
+            <img src="web-assets/ss2.png" class="screenshot">
+            <img src="web-assets/ss3.png" class="screenshot">
+            <img src="web-assets/ss4.png" class="screenshot">
+            <img src="web-assets/ss5.png" class="screenshot">
+          </p>
+          <p>
+            Please, be smart, <strong style="color:red;">never</strong> drink and drive.
+          </p>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row" name="getIt" id="getIt">
+        <div class="span4">
+          <h2>Available for Web</h2>
+          <p>
+            Don't have a compatible mobile device?  No problem! You can simply
+            bookmark the web version with any modern mobile browser and get
+            the same features and experience as the native versions. 
+          </p>
+          <p><a class="btn" href="drinkr.html">Use GoodDrinker &raquo;</a></p>
+        </div>
+        <div class="span4">
+          <h2>Available on the App Store</h2>
+          <p>
+            With GoodDrinker for iOS you can take
+            it with you where ever you go, and there's no need for a network
+            connection. iOS 6.0 or later is required.
+          </p>
+          <p><a class="btn disabled">Coming Soon &raquo;</a></p>
+       </div>
+        <div class="span4">
+          <h2>Available on Google Play</h2>
+          <p>
+            With GoodDrinker for Android you can take
+            it with you where ever you go, and there's no need for a network
+            connection.
+          </p>
+          <p><a class="btn disabled">Coming Soon &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>
+          &copy; 2012 
+        </p>
+        <small style="font-size: smaller;">
+          Please remember to always drink responsibly. This app is not meant to 
+          provide any medical or legal advice about how drunk you are, but 
+          instead only to help you keep track of how many drinks you've had and 
+          when your last drink was.  And remember, GoodDrinker should never be used to 
+          measure your suitability to drive or operate anything fun!  The 
+          developers of GoodDrinker are not liable for any good or bad decisions
+          you make, or the outcome of those decisions. Enjoy responsibility!
+        </small>
+      </footer>
+
+    </div> <!-- /container -->
+    <script type="text/javascript" src="scripts/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="scripts/analytics-web.js"></script>
+
+  </body>
+</html>

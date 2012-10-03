@@ -1,0 +1,90 @@
+
+body {
+  padding: 0;
+  background-color: #eee;
+}
+
+header {
+  text-align: center;
+  /*padding: 10px 10px 15px 10px;*/
+  margin: 0;
+  text-shadow: none;
+  font-weight: normal;
+  position: fixed;
+  width: 100%;
+  z-index: 250;
+  top: 0;
+  box-sizing: border-box;
+}
+
+header h1 {
+  font-size: xx-large;
+  margin: 0;
+}
+
+#drinkList {
+  width: 100%;
+  position: relative;
+  margin-top: 95px;
+  z-index: 50;
+  margin-bottom: 46px;
+  -webkit-box-sizing: border-box; 
+  box-sizing: border-box;
+}
+
+#nextDrinkTime {
+  font-weight: bold;
+}
+
+#drinkList .small {
+  width: 15%;
+  text-align: center;
+}
+
+#colDesc {
+  width: 60%;
+}
+
+
+header.alert {
+  padding: 8px 8px 12px 8px;
+}
+
+footer button {
+  width: 25%;
+}
+
+footer div.container-fluid {
+  padding: 0;
+}
+
+footer .navbar .btn-group {
+  padding: 0;
+}
+
+footer .btn-group > .btn:first-child, footer .btn-group > .btn:last-child {
+  border-radius: 0;
+}
+
+.modal {
+  width: 300px;
+  margin-left: -150px;
+  margin-top: -200px;
+}
+
+.modal .spanMiniModal {
+  width: 255px;
+}
+
+.modal form label {
+  font-weight: bold;
+}
+
+#tableHistory td.small {
+  text-align: center;
+  width: 25%;
+}
+
+.text-red {
+  color: #9d261d;
+}

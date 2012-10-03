@@ -1,0 +1,35 @@
+CACHE MANIFEST
+# 2012-10-02:v0.04
+# GUID: {00000-11111-22222-33333-44448}
+
+CACHE:
+#images
+img/wine.png
+img/glyphicons-halflings-white.png
+img/glyphicons-halflings.png
+
+#internal HTML documents
+drinkr.html
+
+#style sheets
+styles/bootstrap.min.css
+styles/custom.css
+
+#fonts
+styles/fonts/fontawesome-webfont.eot
+styles/fonts/fontawesome-webfont.svg
+styles/fonts/fontawesome-webfont.ttf
+#styles/fonts/fontawesome-webfont.woff
+
+#javascript files
+scripts/jquery-1.7.2.min.js
+scripts/ember-0.9.8.1.min.js
+scripts/bootstrap.min.js
+scripts/lawnchair-0.6.1.min.js
+scripts/moment-1.7.0.min.js
+scripts/en-us.js
+scripts/app.js
+
+NETWORK:
+https://ssl.google-analytics.com
+*
