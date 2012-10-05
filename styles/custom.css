@@ -30,6 +30,7 @@ header h1 {
   margin-bottom: 46px;
   -webkit-box-sizing: border-box; 
   box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
 }
 
 #nextDrinkTime {
@@ -87,4 +88,8 @@ footer .btn-group > .btn:first-child, footer .btn-group > .btn:last-child {
 
 .text-red {
   color: #9d261d;
+}
+
+.btn {
+  -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
