@@ -30,6 +30,8 @@ var GDrinker = Em.Application.create({
   }
 });
 
+GDrinker.Version = "1.0.1";
+
 GDrinker.QuickAdd = function(evt) {
   var item = {};
   item.time = Date.now();

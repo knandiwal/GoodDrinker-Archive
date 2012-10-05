@@ -166,6 +166,8 @@ var GDrinker = Em.Application.create({
   }
 });
 
+GDrinker.Version = "1.0.1";
+
 GDrinker.QuickAdd = function(evt) {
   var item = {};
   item.time = Date.now();
@@ -721,6 +723,7 @@ GDrinker.Analytics.init = function() {
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   window._gaq.push(['_setAccount', id]);
   GDrinker.Analytics.trackEvent("DeviceInit", "web");
+  GDrinker.Analytics.trackEvent("Version", GDrinker.Version);
 };
 
 GDrinker.Analytics.trackEvent = function(category, action, label, value) {
