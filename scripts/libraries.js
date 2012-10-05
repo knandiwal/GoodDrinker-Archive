@@ -17,4 +17,3 @@
 // @codekit-append "bootstrap.min.js"
 // @codekit-append "lawnchair-0.6.1.min.js"
 // @codekit-append "moment-1.7.0.min.js"
-// @codekit-append "fastclick-min.js"
