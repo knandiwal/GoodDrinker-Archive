@@ -25,15 +25,9 @@ GDrinker.Analytics.trackPageView = function(url) {
 
 document.addEventListener("deviceready", function() {
   GDrinker.Analytics.init();
+  new FastClick(document.body);
+  console.log("FastClick registered");
   navigator.splashscreen.hide();
-  
-  document.addEventListener("resume", function() {
-    GDrinker.Analytics.trackEvent("lifecycle", "resume");
-  }, false);
-
-  document.addEventListener("pause", function() {
-    GDrinker.Analytics.trackEvent("lifecycle", "pause");
-  }, false);
 }, false);
 
 GDrinker.Analytics.onSuccess = function(result) {
