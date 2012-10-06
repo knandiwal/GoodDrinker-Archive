@@ -14,3 +14,4 @@
 // @codekit-append "../scripts-src/app.js"
 // @codekit-append "../scripts-src/helpers.js"
 // @codekit-append "../scripts-src/analytics-web.js"
+// @codekit-append "../scripts-src/visibility-web.js"
