@@ -15,12 +15,7 @@ var GDrinker = Em.Application.create({
       GDrinker.FirstRun();
     }
 
-    // Setup Refresh Timer
-    if (GDrinker.Settings.AutoRefreshRate > 0) {
-      setInterval(function(evt) {
-        GDrinker.dataController.set('timer', Date.now());
-      }, GDrinker.Settings.AutoRefreshRate);
-    }
+    GDrinker.Timer.start();
 
     // Add handlers for buttons
     $("#btnQuickAdd").bind('click', GDrinker.QuickAdd);
@@ -475,3 +470,23 @@ GDrinker.RequiredTextInput = Ember.TextField.extend({
     GDrinker.Helpers.ValidateRequiredTextInput(id, true);
   }
 });
+
+GDrinker.Timer = {};
+GDrinker.Timer.timerId = -1;
+
+GDrinker.Timer.start = function() {
+  if ((GDrinker.Settings.AutoRefreshRate > 0) && (GDrinker.Timer.timerId == -1)) {
+    GDrinker.Timer.timerId = setInterval(function(evt) {
+      GDrinker.dataController.set('timer', Date.now());
+    }, GDrinker.Settings.AutoRefreshRate);
+    console.log("Timer Start", GDrinker.Timer.timerId, GDrinker.Settings.AutoRefreshRate / 1000);
+  }
+};
+
+GDrinker.Timer.stop = function() {
+  if (GDrinker.Timer.timerId >= 0) {
+    clearInterval(GDrinker.Timer.timerId);
+    GDrinker.Timer.timerId = -1;
+    console.log("Timer Stop");
+  }
+};
