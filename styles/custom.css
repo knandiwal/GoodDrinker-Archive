@@ -22,6 +22,14 @@ header h1 {
   margin: 0;
 }
 
+.navbar .btn {
+  color: #eee;
+}
+
+.navbar .btn i {
+  color: #fff;
+}
+
 #drinkList {
   width: 100%;
   position: relative;
