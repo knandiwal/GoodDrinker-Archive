@@ -12,7 +12,7 @@ libraries:
 - name: jinja2
   version: latest
 
-default_expiration: "1s"
+default_expiration: "30m"
 
 handlers:
 # - url: /google75906d613a2a09ba.html

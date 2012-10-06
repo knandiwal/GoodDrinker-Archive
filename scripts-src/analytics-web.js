@@ -12,6 +12,7 @@ GDrinker.Analytics.init = function() {
   window._gaq.push(['_setAccount', id]);
   GDrinker.Analytics.trackEvent("DeviceInit", "web");
   GDrinker.Analytics.trackEvent("Version", GDrinker.Version);
+  console.log("Analytics Init Complete");
 };
 
 GDrinker.Analytics.trackEvent = function(category, action, label, value) {
