@@ -1,5 +1,7 @@
 
-var gdrinker_strings = {
+var GDrinker = GDrinker || {};
+
+GDrinker.Strings = {
   default_drink_name: "Drink",
   yes: "YES",
   no: "NO",

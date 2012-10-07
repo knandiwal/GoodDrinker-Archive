@@ -1,5 +1,7 @@
 /* analytics.js */
 
+var cordova = cordova || {};
+var FastClick = FastClick || {};
 var GDrinker = GDrinker || {};
 GDrinker.Analytics = {};
 
@@ -22,5 +24,4 @@ GDrinker.Analytics.trackPageView = function(url) {
 document.addEventListener("deviceready", function() {
   GDrinker.Analytics.init();
   new FastClick(document.body);
-  console.log("FastClick registered");
 }, false);

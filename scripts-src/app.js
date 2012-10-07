@@ -42,7 +42,7 @@ GDrinker.DlgShowDefaults = {
   "keyboard": false
 };
 
-GDrinker.FirstRun = function() {
+GDrinker.FirstRun = function(evt) {
   GDrinker.Settings.FirstRun = false;
   localStorage.GDrinkerSettings = JSON.stringify(GDrinker.Settings);
   $("#dlgFirstRun").modal(GDrinker.DlgShowDefaults);
@@ -92,7 +92,7 @@ GDrinker.GetFromLocalStore = function() {
     settings = {
       TimeBetweenDrinks: 60,
       DrinkSize: 2,
-      DrinkDescription: gdrinker_strings.default_drink_name,
+      DrinkDescription: GDrinker.Strings.default_drink_name,
       WarningForSoon: 54,
       FirstRun: true,
       AutoRefreshRate: 1000
@@ -102,7 +102,7 @@ GDrinker.GetFromLocalStore = function() {
     settings = JSON.parse(settings);
   }
   GDrinker.Settings = settings;
-  var items = store.all(function(arr) {
+  store.all(function(arr) {
     arr.forEach(function(entry) {
       GDrinker.dataController.addItem(entry, false);
     });
@@ -121,7 +121,7 @@ GDrinker.dataController = Em.ArrayController.create({
   // Adds an item to the controller if it's not already in the controller
   addItem: function(item, save) {
     // Create the Ember object
-    emItem = GDrinker.Item.create(item);
+    var emItem = GDrinker.Item.create(item);
 
     // Check to see if there are any items in the controller with the same
     //  time already
@@ -195,14 +195,14 @@ GDrinker.dataController = Em.ArrayController.create({
     if (GDrinker.dataController.lastDrink !== null) {
       var elapsed = this.get('elapsedTime').asMinutes();
       if (elapsed > GDrinker.Settings.TimeBetweenDrinks) {
-        return gdrinker_strings.yes;
+        return GDrinker.Strings.yes;
       } else if (elapsed > GDrinker.Settings.WarningForSoon) {
-        return gdrinker_strings.soon;
+        return GDrinker.Strings.soon;
       } else {
-        return gdrinker_strings.no;
+        return GDrinker.Strings.no;
       }
     } else {
-      return gdrinker_strings.yes;
+      return GDrinker.Strings.yes;
     }
   }.property('timer'),
   elapsedTime: function() {
@@ -239,19 +239,19 @@ GDrinker.StatusView = Em.View.extend({
   classNames: ['alert'],
   classNameBindings: ['drinkNow:alert-success','drinkSoon:alert-warning', 'drinkNo:alert-error'],
   drinkNow: function() {
-    if (GDrinker.dataController.get('canHaveAnother') === gdrinker_strings.yes) {
+    if (GDrinker.dataController.get('canHaveAnother') === GDrinker.Strings.yes) {
       return true;
     }
     return false;
   }.property('GDrinker.dataController.canHaveAnother'),
   drinkSoon: function() {
-    if (GDrinker.dataController.get('canHaveAnother') === gdrinker_strings.soon) {
+    if (GDrinker.dataController.get('canHaveAnother') === GDrinker.Strings.soon) {
       return true;
     }
     return false;
   }.property('GDrinker.dataController.canHaveAnother'),
   drinkNo: function () {
-    if (GDrinker.dataController.get('canHaveAnother') === gdrinker_strings.no) {
+    if (GDrinker.dataController.get('canHaveAnother') === GDrinker.Strings.no) {
       return true;
     }
     return false;
@@ -267,26 +267,26 @@ GDrinker.StatusView = Em.View.extend({
         return eTime.humanize(false);
       } else if (eTime.hours() > 1) {
         result += eTime.hours() + " hours ";
-      } else if (eTime.hours() == 1) {
+      } else if (eTime.hours() === 1) {
         result += " 1 hour ";
       }
       result += Math.floor(eTime.minutes()) + ":" + GDrinker.PadTime(eTime.seconds());
       return result;
     } else {
-      return gdrinker_strings.plenty_of_time;
+      return GDrinker.Strings.plenty_of_time;
     }
   }.property('GDrinker.dataController.timer'),
   drinkAt: function() {
     if (GDrinker.dataController.lastDrink !== null) {
-      if (GDrinker.dataController.get('canHaveAnother') === gdrinker_strings.yes) {
-        return gdrinker_strings.now;
+      if (GDrinker.dataController.get('canHaveAnother') === GDrinker.Strings.yes) {
+        return GDrinker.Strings.now;
       } else {
         var timeOfLastDrink = GDrinker.dataController.lastDrink.get('time');
         var timeOfNextDrink = timeOfLastDrink + (GDrinker.Settings.TimeBetweenDrinks * 60 * 1000);
         return "at " + moment(timeOfNextDrink).format("h:mm a");
       }
     } else {
-        return gdrinker_strings.now;
+        return GDrinker.Strings.now;
     }
   }.property('GDrinker.dataController.canHaveAnother')
 });
@@ -298,11 +298,10 @@ GDrinker.DrinkListView = Em.View.extend({
     return this.get('content').get('timeSinceHumanized') + " ago";
   }.property('WReader.itemsController.@each'),
   drinkTime: function() {
-    var x = this.get('content').get('time');
     var drinkTime = moment(this.get('content').get('time'));
     return drinkTime.format("h:mm a on MMM Do, YYYY");
   }.property('WReader.itemsController.@each'),
-  remove: function(evt) {
+  remove: function() {
     var drink = this.get('content');
     GDrinker.dataController.removeItem(drink);
     GDrinker.Analytics.trackEvent("Drink", "Remove");
@@ -342,9 +341,9 @@ GDrinker.SettingsView = Em.View.extend({
   drinkDescription: function() {
     return GDrinker.Settings.DrinkDescription;
   }.property('GDrinker.dataController.dlgSettingsVisible'),
-  clearAll: function(evt) {
-    GDrinker.Helpers.confirm(gdrinker_strings.clear_msg,
-      gdrinker_strings.clear_title,
+  clearAll: function() {
+    GDrinker.Helpers.confirm(GDrinker.Strings.clear_msg,
+      GDrinker.Strings.clear_title,
       function(butIndex) {
         if (butIndex === 2) {
           GDrinker.dataController.set('lastDrink', null);
@@ -475,11 +474,10 @@ GDrinker.Timer = {};
 GDrinker.Timer.timerId = -1;
 
 GDrinker.Timer.start = function() {
-  if ((GDrinker.Settings.AutoRefreshRate > 0) && (GDrinker.Timer.timerId == -1)) {
-    GDrinker.Timer.timerId = setInterval(function(evt) {
+  if ((GDrinker.Settings.AutoRefreshRate > 0) && (GDrinker.Timer.timerId === -1)) {
+    GDrinker.Timer.timerId = setInterval(function() {
       GDrinker.dataController.set('timer', Date.now());
     }, GDrinker.Settings.AutoRefreshRate);
-    console.log("Timer Start", GDrinker.Timer.timerId, GDrinker.Settings.AutoRefreshRate / 1000);
   }
 };
 
@@ -487,6 +485,5 @@ GDrinker.Timer.stop = function() {
   if (GDrinker.Timer.timerId >= 0) {
     clearInterval(GDrinker.Timer.timerId);
     GDrinker.Timer.timerId = -1;
-    console.log("Timer Stop");
   }
 };
