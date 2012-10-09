@@ -6,8 +6,9 @@
 ********************************************** */
 
 // @codekit-append "../scripts-src/cordova-2.1.0-android.js"
-// @codekit-append "../scripts-src/fastclick.js"
 // @codekit-append "../scripts-src/jquery-1.7.2.min.js"
+// @codekit-append "../scripts-src/fastclick.js"
+// @codekit-append "../scripts-src/fastclick-android.js"
 // @codekit-append "../scripts-src/ember-0.9.8.1.min.js"
 // @codekit-append "../scripts-src/bootstrap.min.js"
 // @codekit-append "../scripts-src/lawnchair-0.6.1.min.js"

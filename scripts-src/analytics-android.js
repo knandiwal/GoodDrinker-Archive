@@ -20,7 +20,7 @@ GDrinker.Analytics.trackEvent = function(category, action, label, value) {
       [category, action, typeof label === "undefined" ? "" : label,
       (isNaN(parseInt(value,10))) ? 0 : parseInt(value, 10)]);
   } catch (ex) {
-    console.log(ex);
+    //console.log(ex);
   }
 };
 
@@ -29,7 +29,7 @@ GDrinker.Analytics.trackPageView = function(url) {
     return cordova.exec(GDrinker.Analytics.onSuccess, GDrinker.Analytics.onFailure,
       'GoogleAnalyticsTracker', 'trackPageView', [url]);
   } catch (ex) {
-    console.log(ex);
+    //console.log(ex);
   }
 };
 
@@ -39,9 +39,9 @@ document.addEventListener("deviceready", function() {
 }, false);
 
 GDrinker.Analytics.onSuccess = function(result) {
-  console.log("Analytics onSuccess", result);
+  //console.log("Analytics onSuccess", result);
 };
 
 GDrinker.Analytics.onFailure = function(result) {
-  console.log("Analytics onFailure", result);
+  //console.log("Analytics onFailure", result);
 };
