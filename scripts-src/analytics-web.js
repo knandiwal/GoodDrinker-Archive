@@ -10,6 +10,7 @@ GDrinker.Analytics.init = function() {
   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   window._gaq.push(['_setAccount', id]);
+  GDrinker.Analytics.trackPageView();
   GDrinker.Analytics.trackEvent("DeviceInit", "web");
   GDrinker.Analytics.trackEvent("Version", GDrinker.Version);
 };
@@ -19,11 +20,13 @@ GDrinker.Analytics.trackEvent = function(category, action, label, value) {
 };
 
 GDrinker.Analytics.trackPageView = function(url) {
-  window._gaq.push(['_trackPageview', url]);
+  if (url) {
+    window._gaq.push(['_trackPageview', url]);
+  } else {
+    window._gaq.push(['_trackPageview']);
+  }
 };
-
 
 $(document).ready(function() {
   GDrinker.Analytics.init();
 });
-

@@ -1,4 +1,9 @@
 
+var Ember = Ember || {};
+var Em = Em || {};
+var moment = moment || {};
+var Lawnchair = Lawnchair || {};
+
 // Create or open the data store where objects are stored for offline use
 var store = new Lawnchair({adapter: 'dom'}, function() {
 });
@@ -12,7 +17,7 @@ var GDrinker = Em.Application.create({
     GDrinker.GetFromLocalStore();
 
     if (GDrinker.Settings.FirstRun) {
-      GDrinker.FirstRun();
+      GDrinker.FirstRun(null);
     }
 
     GDrinker.Timer.start();
@@ -22,12 +27,13 @@ var GDrinker = Em.Application.create({
     $("#btnAdd").bind('click', GDrinker.ToggleAddDrinkDlg);
     $("#btnHistory").bind('click', GDrinker.ToggleHistoryDlg);
     $("#btnSettings").bind('click', GDrinker.ToggleSettingsDlg);
+
   }
 });
 
-GDrinker.Version = "1.0.1";
+GDrinker.Version = "1.0.4";
 
-GDrinker.QuickAdd = function(evt) {
+GDrinker.QuickAdd = function() {
   var item = {};
   item.time = Date.now();
   item.description = GDrinker.Settings.DrinkDescription;
@@ -42,28 +48,28 @@ GDrinker.DlgShowDefaults = {
   "keyboard": false
 };
 
-GDrinker.FirstRun = function(evt) {
+GDrinker.FirstRun = function() {
   GDrinker.Settings.FirstRun = false;
   localStorage.GDrinkerSettings = JSON.stringify(GDrinker.Settings);
   $("#dlgFirstRun").modal(GDrinker.DlgShowDefaults);
   GDrinker.Analytics.trackEvent("ShowDialog", "FirstRun");
 };
 
-GDrinker.ToggleAddDrinkDlg = function(evt) {
+GDrinker.ToggleAddDrinkDlg = function() {
   var sema = GDrinker.dataController.get('dlgAddVisible') + 1;
   GDrinker.dataController.set('dlgAddVisible', sema);
   $("#dlgAddDrink").modal(GDrinker.DlgShowDefaults);
   GDrinker.Analytics.trackEvent("ShowDialog", "AddDrink");
 };
 
-GDrinker.ToggleHistoryDlg = function(evt) {
+GDrinker.ToggleHistoryDlg = function() {
   var sema = GDrinker.dataController.get('dlgHistoryVisible') + 1;
   GDrinker.dataController.set('dlgHistoryVisible', sema);
   $("#dlgHistory").modal(GDrinker.DlgShowDefaults);
   GDrinker.Analytics.trackEvent("ShowDialog", "History");
 };
 
-GDrinker.ToggleSettingsDlg = function(evt) {
+GDrinker.ToggleSettingsDlg = function() {
   var sema = GDrinker.dataController.get('dlgSettingsVisible') + 1;
   GDrinker.dataController.set('dlgSettingsVisible', sema);
   $("#dlgSettings").modal(GDrinker.DlgShowDefaults);

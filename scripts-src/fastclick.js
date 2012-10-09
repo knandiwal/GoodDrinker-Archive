@@ -357,3 +357,8 @@
     window.FastClick = FastClick;
   }
 }());
+
+document.addEventListener("deviceready", function() {
+  new FastClick(".btn");
+  console.log("FastClick registered");
+}, false);

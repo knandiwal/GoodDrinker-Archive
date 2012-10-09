@@ -1,0 +1,20 @@
+#!/bin/bash
+
+rm -rf ../../PhoneGap/GoodDrinker/iOS/www/*
+sed 's/app-web.min.js/app-ios.min.js/g' drinkr.html > ../../PhoneGap/GoodDrinker/iOS/www/drinkr.html
+mkdir ../../PhoneGap/GoodDrinker/iOS/www/scripts
+cp scripts/app-ios.min.js ../../PhoneGap/GoodDrinker/iOS/www/scripts/
+mkdir ../../PhoneGap/GoodDrinker/iOS/www/styles
+cp -R styles/* ../../PhoneGap/GoodDrinker/iOS/www/styles/
+mkdir ../../PhoneGap/GoodDrinker/iOS/www/img
+cp -R img/* ../../PhoneGap/GoodDrinker/iOS/www/img/
+
+
+rm -rf ../../PhoneGap/GoodDrinker/Android/assets/www/*
+sed 's/app-web.min.js/app-android.min.js/g' drinkr.html > ../../PhoneGap/GoodDrinker/Android/assets/www/drinkr.html
+mkdir ../../PhoneGap/GoodDrinker/Android/assets/www/scripts
+cp scripts/app-android.min.js ../../PhoneGap/GoodDrinker/Android/assets/www/scripts/
+mkdir ../../PhoneGap/GoodDrinker/Android/assets/www/styles
+cp -R styles/* ../../PhoneGap/GoodDrinker/Android/assets/www/styles/
+mkdir ../../PhoneGap/GoodDrinker/Android/assets/www/img
+cp -R img/* ../../PhoneGap/GoodDrinker/Android/assets/www/img/
