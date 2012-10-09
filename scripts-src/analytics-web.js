@@ -10,8 +10,7 @@ GDrinker.Analytics.init = function() {
   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   window._gaq.push(['_setAccount', id]);
-  GDrinker.Analytics.trackPageView();
-  GDrinker.Analytics.trackEvent("DeviceInit", "web");
+  GDrinker.Analytics.trackPageView("/App/Web/");
   GDrinker.Analytics.trackEvent("Version", GDrinker.Version);
 };
 

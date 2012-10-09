@@ -7,4 +7,3 @@
 
 // @codekit-append "../scripts-src/jquery-1.7.2.min.js"
 // @codekit-append "../scripts-src/bootstrap.min.js"
-// @codekit-append "../scripts-src/analytics-web.js"

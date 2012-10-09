@@ -8,7 +8,6 @@ GDrinker.Analytics.init = function() {
   var id = "UA-9988000-21";
   cordova.exec("GoogleAnalyticsPlugin.startTrackerWithAccountID", id);
   GDrinker.Analytics.trackPageView("/App/iOS/");
-  GDrinker.Analytics.trackEvent("DeviceInit", "ios");
   GDrinker.Analytics.trackEvent("Version", GDrinker.Version);
 };
 

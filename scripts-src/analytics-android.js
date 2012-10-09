@@ -9,7 +9,6 @@ GDrinker.Analytics.init = function() {
   cordova.exec(GDrinker.Analytics.onSuccess, GDrinker.Analytics.onFailure,
     'GoogleAnalyticsTracker', 'start', [id]);
   GDrinker.Analytics.trackPageView("/App/Android/");
-  GDrinker.Analytics.trackEvent("DeviceInit", "android");
   GDrinker.Analytics.trackEvent("Version", GDrinker.Version);
 };
 

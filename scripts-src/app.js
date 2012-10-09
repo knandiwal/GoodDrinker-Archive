@@ -39,7 +39,7 @@ GDrinker.QuickAdd = function() {
   item.description = GDrinker.Settings.DrinkDescription;
   item.amount = GDrinker.Settings.DrinkSize;
   GDrinker.dataController.addItem(item, true);
-  GDrinker.Analytics.trackEvent("Drink", "QuickAdd", GDrinker.Settings.DrinkSize);
+  GDrinker.Analytics.trackEvent("AddDrink", "QuickAdd", GDrinker.Settings.DrinkSize);
 };
 
 GDrinker.DlgShowDefaults = {
@@ -310,7 +310,7 @@ GDrinker.DrinkListView = Em.View.extend({
   remove: function() {
     var drink = this.get('content');
     GDrinker.dataController.removeItem(drink);
-    GDrinker.Analytics.trackEvent("Drink", "Remove");
+    GDrinker.Analytics.trackEvent("RemoveDrink", "Single-StatusView");
   }
 });
 
@@ -384,7 +384,7 @@ GDrinker.AddDrinkView = Em.View.extend({
       item.amount = $("#addAmount").val();
       GDrinker.dataController.addItem(item, true);
       this.close();
-      GDrinker.Analytics.trackEvent("Drink", "Add", item.amount);
+      GDrinker.Analytics.trackEvent("AddDrink", "Custom", item.amount);
     }
   },
   drinkSize: function() {
