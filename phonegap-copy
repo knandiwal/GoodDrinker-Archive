@@ -1,20 +1,125 @@
 #!/bin/bash
 
-rm -rf ../../PhoneGap/GoodDrinker/iOS/www/*
-sed 's/app-web.min.js/app-ios.min.js/g' drinkr.html > ../../PhoneGap/GoodDrinker/iOS/www/drinkr.html
-mkdir ../../PhoneGap/GoodDrinker/iOS/www/scripts
-cp scripts/app-ios.min.js ../../PhoneGap/GoodDrinker/iOS/www/scripts/
-mkdir ../../PhoneGap/GoodDrinker/iOS/www/styles
-cp -R styles/* ../../PhoneGap/GoodDrinker/iOS/www/styles/
-mkdir ../../PhoneGap/GoodDrinker/iOS/www/img
-cp -R img/* ../../PhoneGap/GoodDrinker/iOS/www/img/
+BUILDDATE=$(date)
+BUILDVERSION=`cat .version`
+VERSIONCODE=`cat .versioncode`
 
+echo GoodDrinker PhoneGap Builder
+echo - Build Date:    $BUILDDATE
+echo - Build Version: $BUILDVERSION
+echo - Version Code:  $VERSIONCODE
+echo 
 
-rm -rf ../../PhoneGap/GoodDrinker/Android/assets/www/*
-sed 's/app-web.min.js/app-android.min.js/g' drinkr.html > ../../PhoneGap/GoodDrinker/Android/assets/www/drinkr.html
-mkdir ../../PhoneGap/GoodDrinker/Android/assets/www/scripts
-cp scripts/app-android.min.js ../../PhoneGap/GoodDrinker/Android/assets/www/scripts/
-mkdir ../../PhoneGap/GoodDrinker/Android/assets/www/styles
-cp -R styles/* ../../PhoneGap/GoodDrinker/Android/assets/www/styles/
-mkdir ../../PhoneGap/GoodDrinker/Android/assets/www/img
-cp -R img/* ../../PhoneGap/GoodDrinker/Android/assets/www/img/
+#WEB Version
+DIR=../../PhoneGap/GoodDrinker/www
+MANIFESTFILE=$(date +%Y%m%d-%S).appcache
+echo Building Web Version
+echo Path: $DIR
+echo -Cleaning old version
+rm -rf $DIR/*
+echo -Copying \& updating drinkr.html
+sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    -e 's/no-cache.appcache/'"$MANIFESTFILE"'/g' \
+    drinkr.html > $DIR/drinkr.html
+echo -Copying \& updating Manifest file \[$MANIFESTFILE\]
+sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    manifest.appcache > $DIR/$MANIFESTFILE
+echo -Copying \& updating scripts
+mkdir $DIR/scripts
+sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    scripts/app-web.min.js > $DIR/scripts/app-web.min.js
+sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    scripts/home.min.js > $DIR/scripts/home.min.js
+echo -Copying styles
+mkdir $DIR/styles
+cp -R styles/* $DIR/styles/
+echo -Copying images
+mkdir $DIR/img
+cp -R img/* $DIR/img/
+echo -Copying website files
+cp 404.html $DIR/
+cp app.yaml $DIR/
+cp index.html $DIR/
+cp main.py $DIR/
+mkdir $DIR/web-assets
+cp -R web-assets/* $DIR/web-assets/
+echo Completed.
+echo
+
+#iOS Version
+DIR=../../PhoneGap/GoodDrinker/iOS/www
+echo Building iOS Version
+echo -Path: $DIR
+echo -Cleaning old version
+rm -rf $DIR/*
+echo -Copying \& updating drinkr.html
+sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    -e 's/ manifest=\"no-cache.appcache\"//g' \
+    -e 's/app-web.min.js/app-ios.min.js/g' \
+    drinkr.html > $DIR/drinkr.html
+echo -Copying \& updating scripts
+mkdir $DIR/scripts
+sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    scripts/app-ios.min.js > $DIR/scripts/app-ios.min.js
+echo -Copying styles
+mkdir $DIR/styles
+cp -R styles/* $DIR/styles/
+echo -Copying images
+mkdir $DIR/img
+cp -R img/* $DIR/img/
+echo -Updating GoodDrinker-info.plist
+LINE=`sed -n '/<key>CFBundleShortVersionString<\/key>/ =' $DIR/../GDrinker/GoodDrinker-info.plist`
+LINE=$[$LINE+1]
+sed -e ''"$LINE"' s/<string>.*<\/string>/<string>'"$BUILDVERSION"'<\/string>/g' $DIR/../GDrinker/GoodDrinker-Info.plist > $DIR/../GDrinker/GoodDrinker-info.tmp 
+LINE=`sed -n '/<key>CFBundleVersion<\/key>/ =' $DIR/../GDrinker/GoodDrinker-info.tmp`
+LINE=$[$LINE+1]
+sed -e ''"$LINE"' s/<string>.*<\/string>/<string>'"$BUILDVERSION"'<\/string>/g' $DIR/../GDrinker/GoodDrinker-info.tmp > $DIR/../GDrinker/GoodDrinker-info.tmp2
+rm $DIR/../GDrinker/GoodDrinker-info.tmp
+rm $DIR/../GDrinker/GoodDrinker-info.bak
+mv $DIR/../GDrinker/GoodDrinker-info.plist $DIR/../GDrinker/GoodDrinker-info.bak
+mv $DIR/../GDrinker/GoodDrinker-info.tmp2 $DIR/../GDrinker/GoodDrinker-info.plist
+echo Completed.
+echo
+
+#Android Version
+DIR=../../PhoneGap/GoodDrinker/Android/assets/www
+echo Building Android Version
+echo -Path: $DIR
+echo -Cleaning old version
+rm -rf $DIR/*
+echo -Copying \& updating drinkr.html
+sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    -e 's/ manifest=\"no-cache.appcache\"//g' \
+    -e 's/app-web.min.js/app-android.min.js/g' \
+    drinkr.html > $DIR/drinkr.html
+echo -Copying \& updating scripts
+mkdir $DIR/scripts
+sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    scripts/app-android.min.js > $DIR/scripts/app-android.min.js
+echo -Copying styles
+mkdir $DIR/styles
+cp -R styles/* $DIR/styles/
+echo -Copying images
+mkdir $DIR/img
+cp -R img/* $DIR/img/
+echo -Updating AndroidManifest.xml
+sed -e 's/android:versionName=\".*\"/android:versionName=\"'"$BUILDVERSION"'\"/g' \
+    -e 's/android:versionCode=\".*\"/android:versionCode=\"'"$VERSIONCODE"'\"/g' \
+    $DIR/../../AndroidManifest.xml > $DIR/../../AndroidManifest.tmp
+rm $DIR/../../AndroidManifest.bak
+mv $DIR/../../AndroidManifest.xml $DIR/../../AndroidManifest.bak
+mv $DIR/../../AndroidManifest.tmp $DIR/../../AndroidManifest.xml
+echo Completed.
+echo

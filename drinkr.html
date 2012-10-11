@@ -1,10 +1,11 @@
 <!DOCTYPE html> 
-<html manifest="20121008-3.appcache">
-
+<html manifest="no-cache.appcache">
   <head>
     <meta charset="UTF-8">
     <title>GoodDrinker</title>
     
+    <meta name="build-date" content="--BUILDDATE--">
+    <meta name="build-version" content="--BUILDVERSION--">
     <meta name="description" content="Track your drinking habits with GoodDrinker">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -24,8 +25,8 @@
     <script type="text/x-handlebars">
       {{#view GDrinker.StatusView}}
         <h1>{{message}}</h1>
-        <div><b>{{timeSince}}</b> since your last drink</div>
-        <div>You can have another drink <b>{{drinkAt}}</b></div>
+        <div>{{time_since}}</div>
+        <div>{{wait_until}}</div>
       {{/view}}
     </script>
 
@@ -90,13 +91,13 @@
           <div class="control-group">
             <label class="control-label" for="addTime">Time</label>
             <div class="controls">
-              {{view GDrinker.TimeInput type="time" name="addTime" id="addTime" class="spanMiniModal" placeholder="4:00 pm" valueBinding="currentTime"}}
+              {{view GDrinker.TimeInput type="time" name="addTime" id="addTime" class="spanMiniModal clickevent" placeholder="4:00 pm" valueBinding="currentTime"}}
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="addDate">Date</label>
             <div class="controls">
-              {{view GDrinker.DateInput type="date" name="addDate" id="addDate" class="spanMiniModal" placeholder="mm/dd/yyyy" valueBinding="currentDate"}}
+              {{view GDrinker.DateInput type="date" name="addDate" id="addDate" class="spanMiniModal clickevent" placeholder="mm/dd/yyyy" valueBinding="currentDate"}}
             </div>
           </div>
         </form>
@@ -135,8 +136,25 @@
             </div>
           </div>
 
-          <label class="control-label" for="setErase">Clear All Data</label>
-          <button {{action clearAll}} id="btnDlgSetErase" class="btn btn-danger" type="button" ><i class="icon-trash icon-large"></i> Erase</button>
+          <div class="dlg2col">
+            <span>
+              <div class="control-group">
+                <label class="control-label" for="setErase">Clear All Data</label>
+                <div class="controls">
+                  <button {{action clearAll}} id="btnDlgSetErase" class="btn btn-danger" type="button" ><i class="icon-trash icon-large"></i> Erase</button>
+                </div>
+              </div>
+            </span>
+            <span>
+              <div class="control-group">
+                <label class="control-label" for="setAbout">About</label>
+                <div class="controls">
+                  <button {{action about}} type="button" class="btn btn-info"><i class="icon-info-sign icon-large"></i> About</button>  
+                </div> 
+              </div>
+            </span>
+          </div>
+
         </form>
       </div>
       <div class="modal-footer">
@@ -214,7 +232,9 @@
           had and when your last drink was.
         </p>
         <p>
-          Please, be smart, <strong class="text-red">never</strong> drink and drive.  
+          Please, be smart, <strong class="text-red">never</strong> drink and drive.
+          And if you're not old enough to drink, please close this app, you should
+          <strong class="text-red">not</strong> be drinking.
         </p>
         <p>
           The developers of GoodDrinker are not liable for any good or bad decisions
@@ -222,9 +242,28 @@
         </p>
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn btn-primary">Got it!</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary">I Got It!</button>
       </div>
     </div>
+
+    <script type="text/x-handlebars">
+    {{#view GDrinker.AboutView id="dlgAbout"}}
+      <div class="modal-header">
+        <button {{action close}} type="button" class="close">&times;</button>
+        <h3>About</h3>
+      </div>
+      <div class="modal-body">
+        <p>TODO: update here</p>
+        <p>
+          <strong>Version:</strong> {{version}}
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button {{action close}} type="button" class="btn btn-primary">Close</button>
+      </div>
+    {{/view}}
+    </script>
+
     <script type="text/javascript" src="scripts/app-web.min.js"></script>
   </body>
 </html>

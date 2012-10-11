@@ -30,6 +30,10 @@ header h1 {
   color: #fff;
 }
 
+.fadeDialog {
+  opacity: 0.25;
+}
+
 #drinkList {
   width: 100%;
   position: relative;
@@ -100,4 +104,13 @@ footer .btn-group > .btn:first-child, footer .btn-group > .btn:last-child {
 
 .btn {
   -webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+.dlg2col span:first-child {
+  display:inline-block;
+  width:50%;
+}
+
+.dlg2col span:last-child {
+  display:inline-block;
 }

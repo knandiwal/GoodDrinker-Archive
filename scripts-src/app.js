@@ -31,9 +31,11 @@ var GDrinker = Em.Application.create({
   }
 });
 
-GDrinker.Version = "1.0.4";
+GDrinker.Version = "--BUILDVERSION--";
+GDrinker.BuildDate = "--BUILDDATE--";
+GDrinker.VersionCode = "--VERSIONCODE--";
 
-GDrinker.QuickAdd = function() {
+GDrinker.QuickAdd = function(evt) {
   var item = {};
   item.time = Date.now();
   item.description = GDrinker.Settings.DrinkDescription;
@@ -44,7 +46,7 @@ GDrinker.QuickAdd = function() {
 
 GDrinker.DlgShowDefaults = {
   "show": true,
-  "backdrop": true,
+  "backdrop": "static",
   "keyboard": false
 };
 
@@ -67,6 +69,13 @@ GDrinker.ToggleHistoryDlg = function() {
   GDrinker.dataController.set('dlgHistoryVisible', sema);
   $("#dlgHistory").modal(GDrinker.DlgShowDefaults);
   GDrinker.Analytics.trackEvent("ShowDialog", "History");
+};
+
+GDrinker.ToggleAboutDlg = function() {
+  var sema = GDrinker.dataController.get('dlgAboutVisible') + 1;
+  GDrinker.dataController.set('dlgAboutVisible', sema);
+  $("#dlgAbout").modal(GDrinker.DlgShowDefaults);
+  GDrinker.Analytics.trackEvent("ShowDialog", "About");
 };
 
 GDrinker.ToggleSettingsDlg = function() {
@@ -123,6 +132,7 @@ GDrinker.dataController = Em.ArrayController.create({
   dlgAddVisible: 0,
   dlgHistoryVisible: 0,
   dlgSettingsVisible: 0,
+  dlgAboutVisible: 0,
 
   // Adds an item to the controller if it's not already in the controller
   addItem: function(item, save) {
@@ -265,6 +275,41 @@ GDrinker.StatusView = Em.View.extend({
   message: function() {
     return GDrinker.dataController.get('canHaveAnother');
   }.property('GDrinker.dataController.canHaveAnother'),
+  time_since: function() {
+    var result = GDrinker.Strings.time_since_last_drink;
+    if (GDrinker.dataController.lastDrink !== null) {
+      var eTime = GDrinker.dataController.get('elapsedTime');
+      var since = "";
+      if (eTime.days() >= 1) {
+        since = eTime.humanize(false);
+      } else if (eTime.hours() > 1) {
+        since = eTime.hours() + " hours ";
+      } else if (eTime.hours() === 1) {
+        since = " 1 hour ";
+      }
+      since += Math.floor(eTime.minutes()) + ":" + GDrinker.PadTime(eTime.seconds());
+      result = result.replace("{{time}}", since);
+    } else {
+      result = result.replace("{{time}}", GDrinker.Strings.plenty_of_time);
+    }
+    return new Handlebars.SafeString(result);
+  }.property('GDrinker.dataController.timer'),
+  wait_until: function() {
+    var result = GDrinker.Strings.wait_until;
+    if (GDrinker.dataController.lastDrink !== null) {
+      if (GDrinker.dataController.get('canHaveAnother') === GDrinker.Strings.yes) {
+        return new Handlebars.SafeString(GDrinker.Strings.drink_now);
+      } else {
+        var timeOfLastDrink = GDrinker.dataController.lastDrink.get('time');
+        var timeOfNextDrink = timeOfLastDrink + (GDrinker.Settings.TimeBetweenDrinks * 60 * 1000);
+        timeOfNextDrink = moment(timeOfNextDrink).format("h:mm a");
+        result = result.replace("{{time}}", timeOfNextDrink);
+      }
+    } else {
+      return new Handlebars.SafeString(GDrinker.Strings.drink_now);
+    }
+    return new Handlebars.SafeString(result);
+  }.property('GDrinker.dataController.timer'),
   timeSince: function() {
     if (GDrinker.dataController.lastDrink !== null) {
       var eTime = GDrinker.dataController.get('elapsedTime');
@@ -314,9 +359,22 @@ GDrinker.DrinkListView = Em.View.extend({
   }
 });
 
+GDrinker.AboutView = Em.View.extend({
+  classNames: ['modal', 'hide'],
+  close: function() {
+    $('#dlgAbout').modal('hide');
+    $('#dlgSettings').removeClass("fadeDialog");
+  },
+  version: function() {
+    return GDrinker.Version;
+  }.property()
+});
+
 GDrinker.SettingsView = Em.View.extend({
   classNames: ['modal', 'hide'],
-  test: function() {
+  about: function() {
+    $('#dlgSettings').addClass("fadeDialog");
+    GDrinker.ToggleAboutDlg();
   },
   close: function() {
     $('#dlgSettings').modal('hide');

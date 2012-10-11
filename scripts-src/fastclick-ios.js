@@ -1,5 +1,4 @@
 var FastClick = FastClick || {};
-var console = console || {};
 
 document.addEventListener("deviceready", function() {
   var buttons = $(".btn");

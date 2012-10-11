@@ -1,7 +1,7 @@
 var FastClick = FastClick || {};
-var console = console || {};
+var GDrinker = GDrinker || {};
 
 $(window).load(function () {
   new FastClick(document.body);
-  console.log("FastClick Registered (Android)");
+  console.log("FastClick Registered on Body (Android)");
 });

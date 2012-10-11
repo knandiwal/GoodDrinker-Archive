@@ -3,7 +3,6 @@
 var GDrinker = GDrinker || {};
 GDrinker.Helpers = {};
 
-
 GDrinker.Helpers.confirm = function(msg, title, callback) {
   if (navigator.notification && navigator.notification.confirm) {
     navigator.notification.confirm(msg, callback, title, "Cancel,OK");

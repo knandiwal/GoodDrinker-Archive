@@ -3,6 +3,9 @@
  App-Compiled used by GoodDrinker and concatenated
  to app-ios.min.js using CodeKit:
  
+ Build Date: --BUILDDATE--
+ Build Version: --BUILDVERSION--
+
 ********************************************** */
 
 // @codekit-append "../scripts-src/cordova-2.1.0-ios.js"

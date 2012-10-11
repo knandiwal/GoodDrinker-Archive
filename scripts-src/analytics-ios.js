@@ -16,7 +16,7 @@ GDrinker.Analytics.trackEvent = function(category, action, label, value) {
     var options = {category: category, action: action, label: label, value: value};
     cordova.exec("GoogleAnalyticsPlugin.trackEvent", options);
   } catch (ex) {
-    console.log("Exception");
+    //console.log("Exception");
   }
 };
 
@@ -24,7 +24,7 @@ GDrinker.Analytics.trackPageView = function(url) {
   try {
     cordova.exec("GoogleAnalyticsPlugin.trackPageview", url);
   } catch (ex) {
-    console.log("Exception");
+    //console.log("Exception");
   }
 };
 
