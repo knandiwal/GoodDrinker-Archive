@@ -45,22 +45,22 @@
       </table>
     </script>
     
-    <footer>
+    <footer id="footerBar">
       <div class="navbar navbar-fixed-bottom">
         <div class="navbar-inner">
           <div class="container-fluid">
             <div class="btn-group">
               <button id="btnQuickAdd" class="btn btn-inverse">
-                <i class="icon-plus-sign icon-large"></i><br>Fast Add
+                <i class="icon-plus-sign icon-large"></i><br><span id="strButFastAdd">Fast Add</span>
               </button>
               <button id="btnAdd" class="btn btn-inverse">
-                <i class="icon-plus icon-large"></i><br>Add
+                <i class="icon-plus icon-large"></i><br><span id="strButAdd">Add</span>
               </button>
               <button id="btnHistory" class="btn btn-inverse">
-                <i class="icon-dashboard icon-large"></i><br>History
+                <i class="icon-dashboard icon-large"></i><br><span id="strButHistory">History</span>
               </button>
               <button id="btnSettings" class="btn btn-inverse">
-                <i class="icon-cogs icon-large"></i><br>Settings
+                <i class="icon-cogs icon-large"></i><br><span id="strButSettings">Settings</span>
               </button>
             </div>
           </div>
@@ -72,30 +72,30 @@
     {{#view GDrinker.AddDrinkView id="dlgAddDrink"}}
       <div class="modal-header">
         <button type="button" {{action close}} class="close">&times;</button>
-        <h3>Add a drink</h3>
+        <h3 id="strDlgAddHeader">Add a drink</h3>
       </div>
       <div class="modal-body">
         <form>
           <div class="control-group">
-            <label class="control-label" for="addDesc">Description</label>
+            <label class="control-label" id="strDlgAddDesc" for="addDesc">Description</label>
             <div class="controls">
               {{view GDrinker.RequiredTextInput type="text" name="addDesc" id="addDesc" class="spanMiniModal" placeholder="Type something..." valueBinding="drinkDescription"}}
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label" for="addAmount">Amount</label>
+            <label class="control-label" id="strDlgAddAmount" for="addAmount">Amount</label>
             <div class="controls">
               {{view GDrinker.NumberInput type="number" min="0.25" step="0.25" name="addAmount" id="addAmount" class="spanMiniModal" placeholder="2" valueBinding="drinkSize"}}
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label" for="addTime">Time</label>
+            <label class="control-label" id="strDlgAddTime" for="addTime">Time</label>
             <div class="controls">
               {{view GDrinker.TimeInput type="time" name="addTime" id="addTime" class="spanMiniModal clickevent" placeholder="4:00 pm" valueBinding="currentTime"}}
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label" for="addDate">Date</label>
+            <label class="control-label" id="strDlgAddDate" for="addDate">Date</label>
             <div class="controls">
               {{view GDrinker.DateInput type="date" name="addDate" id="addDate" class="spanMiniModal clickevent" placeholder="mm/dd/yyyy" valueBinding="currentDate"}}
             </div>
@@ -103,8 +103,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button {{action close}} type="button" class="btn">Close</button>
-        <button {{action save}} type="button" class="btn btn-primary">Save changes</button>
+        <button {{action close}} type="button" class="btn strButClose">Close</button>
+        <button {{action save}} type="button" class="btn btn-primary strButSave">Save changes</button>
       </div>
     {{/view}}
     </script>
@@ -113,43 +113,50 @@
     {{#view GDrinker.SettingsView id="dlgSettings"}}
       <div class="modal-header">
         <button type="button" {{action close}} class="close">&times;</button>
-        <h3>Settings</h3>
+        <h3 id="strDlgSettingsHeader">Settings</h3>
       </div>
       <div class="modal-body">
         <form>
           <div class="control-group">
-            <label class="control-label" for="setTimeBetween">Time Between Drinks</label>
+            <label class="control-label" id="strDlgSettingsTimeBetween" for="setTimeBetween">Time Between Drinks</label>
             <div class="controls">
               {{view GDrinker.NumberInput type="number" name="setTimeBetween" id="setTimeBetween" min="1" class="spanMiniModal" placeholder="Time Between Drinks" valueBinding="timeBetween"}}
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label" for="setDrinkSize">Default Drink Size</label>
+            <label class="control-label" id="strDlgSettingsDrinkSize" for="setDrinkSize">Default Drink Size</label>
             <div class="controls">
               {{view GDrinker.NumberInput type="number" min="0.25" step="0.25" class="spanMiniModal" id="setDrinkSize" name="setDrinkSize" placeholder="Drink size" valueBinding="drinkSize"}}
             </div>
           </div>
           <div class="control-group">
-            <label class="control-label" for="setDesc">Default Description</label>
+            <label class="control-label" id="strDlgSettingsDescription" for="setDesc">Default Description</label>
             <div class="controls">
               {{view GDrinker.RequiredTextInput type="text" name="setDesc" id="setDesc" class="spanMiniModal" placeholder="Type something..." valueBinding="drinkDescription"}}
             </div>
           </div>
+          <div class="control-group hide" id="setLangGroup">
+            <label class="control-label" id="strDlgSettingsLanguage" for="setLang">Language</label>
+            <div class="controls">
+              <select id="setLang" id="setLang" class="spanMiniModal">
 
+              </select>
+            </div>
+          </div>
           <div class="dlg2col">
             <span>
               <div class="control-group">
-                <label class="control-label" for="setErase">Clear All Data</label>
+                <label class="control-label" id="strDlgSettingsErase" for="setErase">Clear All Data</label>
                 <div class="controls">
-                  <button {{action clearAll}} id="btnDlgSetErase" class="btn btn-danger" type="button" ><i class="icon-trash icon-large"></i> Erase</button>
+                  <button {{action clearAll}} id="btnDlgSetErase" class="btn btn-danger" type="button" ><i class="icon-trash icon-large"></i> <span id="strDlgSettingsButErase">Erase</span></button>
                 </div>
               </div>
             </span>
             <span>
               <div class="control-group">
-                <label class="control-label" for="setAbout">About</label>
+                <label class="control-label" id="strDlgSettingsAbout" for="setAbout">About</label>
                 <div class="controls">
-                  <button {{action about}} type="button" class="btn btn-info"><i class="icon-info-sign icon-large"></i> About</button>  
+                  <button {{action about}} type="button" class="btn btn-info"><i class="icon-info-sign icon-large"></i> <span id="strDlgSettingsButAbout">About</span></button>  
                 </div> 
               </div>
             </span>
@@ -158,8 +165,8 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button {{action close}} type="button" class="btn">Close</button>
-        <button {{action save}} type="button" class="btn btn-primary">Save changes</button>
+        <button {{action close}} type="button" class="btn strButClose">Close</button>
+        <button {{action save}} type="button" class="btn btn-primary strButSave">Save changes</button>
       </div>
     {{/view}}
     </script>
@@ -168,7 +175,7 @@
     {{#view GDrinker.HistoryView id="dlgHistory"}}
       <div class="modal-header">
         <button {{action close}} type="button" class="close">&times;</button>
-        <h3>History</h3>
+        <h3 id="strDlgHistoryHeader">History</h3>
       </div>
       <div class="modal-body">
         <table id="tableHistory" class="table-striped table-bordered" style="width:100%;">
@@ -181,32 +188,32 @@
           </thead>
           <tbody>
             <tr>
-              <td>Last 24 hours</td>
+              <td id="strDlgHistoryLast24">Last 24 hours</td>
               <td class="small">{{drinks24}}</td>
               <td class="small">{{qty24}}</td>
             </tr>
             <tr>
-              <td>Last 48 hours</td>
+              <td id="strDlgHistoryLast48">Last 48 hours</td>
               <td class="small">{{drinks48}}</td>
               <td class="small">{{qty48}}</td>
             </tr>
             <tr>
-              <td>Last 72 hours</td>
+              <td id="strDlgHistoryLast72">Last 72 hours</td>
               <td class="small">{{drinks72}}</td>
               <td class="small">{{qty72}}</td>
             </tr>
             <tr>
-              <td>Last week</td>
+              <td id="strDlgHistoryLastW">Last week</td>
               <td class="small">{{drinks168}}</td>
               <td class="small">{{qty168}}</td>
             </tr>
             <tr>
-              <td>Last month</td>
+              <td id="strDlgHistoryLastM">Last month</td>
               <td class="small">{{drinks720}}</td>
               <td class="small">{{qty720}}</td>
             </tr>
             <tr>
-              <td>All time</td>
+              <td id="strDlgHistoryAllTime">All time</td>
               <td class="small">{{drinksAll}}</td>
               <td class="small">{{qtyAll}}</td>
             </tr>
@@ -214,7 +221,7 @@
         </table>
       </div>
       <div class="modal-footer">
-        <button {{action close}} type="button" class="btn btn-primary">Close</button>
+        <button {{action close}} type="button" class="btn btn-primary strButClose">Close</button>
       </div>
     {{/view}}
     </script>
@@ -222,9 +229,9 @@
     <div class="modal hide" id="dlgFirstRun">
       <div class="modal-header">
         <button id="btnDlgFRClose1" type="button" data-dismiss="modal" class="close">&times;</button>
-        <h3>Welcome</h3>
+        <h3 id="strDlgFirstRunHeader">Welcome</h3>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" id="strDlgFirstRunBody">
         <p>
           Welcome to GoodDrinker! Please remember to always drink responsibly.  
           This app is not meant to provide any medical or legal advice about how
@@ -242,7 +249,7 @@
         </p>
       </div>
       <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn btn-primary">I Got It!</button>
+        <button type="button" data-dismiss="modal" class="btn btn-primary" id="strDlgFirstRunButOK">I Got It!</button>
       </div>
     </div>
 
@@ -250,16 +257,19 @@
     {{#view GDrinker.AboutView id="dlgAbout"}}
       <div class="modal-header">
         <button {{action close}} type="button" class="close">&times;</button>
-        <h3>About</h3>
+        <h3><span id="strDlgAboutHeader">About</span></h3>
       </div>
       <div class="modal-body">
-        <p>TODO: update here</p>
         <p>
-          <strong>Version:</strong> {{version}}
+          <span id="strDlgAboutBody"></span>
+        </p>
+        <p>
+          <strong><span id="strDlgAboutVersion">Version</span>:</strong> {{version}}<br />
+          <strong><span id="strDlgAboutBuild">Build Date</span>:</strong> {{build_date}}
         </p>
       </div>
       <div class="modal-footer">
-        <button {{action close}} type="button" class="btn btn-primary">Close</button>
+        <button {{action close}} type="button" class="btn btn-primary strButClose">Close</button>
       </div>
     {{/view}}
     </script>

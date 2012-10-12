@@ -18,6 +18,21 @@ GDrinker.Helpers.confirm = function(msg, title, callback) {
   }
 };
 
+GDrinker.Helpers.alert = function(msg, title, callback) {
+  if (navigator.notification && navigator.notification.confirm) {
+    navigator.notification.alert(msg, callback, title, "OK");
+  } else {
+    setTimeout(function() {
+      var response = alert(msg);
+      if (response) {
+        callback(2);
+      } else {
+        callback(1);
+      }
+    }, 0);
+  }
+};
+
 GDrinker.Helpers.setErrorOnForm = function(elementId, isValid) {
   if (isValid) {
     $(elementId).parents(".control-group").removeClass("error");

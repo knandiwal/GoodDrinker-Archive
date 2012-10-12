@@ -1,0 +1,69 @@
+{
+    "language": "en-ca",
+    "url": "/languages/en-ca.json",
+    "language_name": "Canadian",
+    "language_version": 1,
+    "default_drink_name": "Drink",
+    "yes": "YES, eh",
+    "no": "NO, eh",
+    "soon": "SOON, eh",
+    "plenty_of_time": "a while, eh",
+    "time_since_last_drink": "It's been <b>{{time}}</b> since your last drink, eh",
+    "wait_until": "You should wait until at least <b>{{time}}</b>, eh",
+    "drink_now": "Be smart, <b>always</b> drink responsibily, eh!",
+    "hours": "hoors",
+    "one_hour": "1 hoor",
+    "switch_language_failed": {
+      "header": "Error, eh",
+      "message": "Unable to get language pack, eh"
+    },
+    "action_buttons": {
+        "fast_add": "Fast Add, eh",
+        "add": "Add, eh",
+        "history": "History, eh",
+        "settings": "Settings, eh"
+    },
+    "dialog_add": {
+        "header": "Add a drink, eh",
+        "description": "Description, eh",
+        "amount": "Amount, eh",
+        "time": "Time, eh",
+        "date": "Date, eh"
+    },
+    "dialog_history": {
+        "header": "History, eh",
+        "last24": "Last 24 hours, eh",
+        "last48": "Last 48 hours, eh",
+        "last72": "Last 72 hours, eh",
+        "lastW": "Last week, eh",
+        "lastM": "Last month, eh",
+        "allTime": "All time, eh"
+    },
+    "dialog_settings": {
+        "header": "Settings, eh",
+        "time_between": "Time Between Drinks, eh",
+        "default_drink_size": "Default Drink Size, eh",
+        "default_description": "Default Description, eh",
+        "clear_all": "Clear All Data, eh",
+        "clear_all_button": "Erase, eh",
+        "clear_msg": "This will delete all of your settings and is unrecoverable, eh?",
+        "clear_title": "Erase everying, eh?",
+        "about": "Aboot",
+        "about_button": "Aboot",
+        "short_time_title": "Slow down!",
+        "short_time_msg": "Be smart, leave more time between drinks and drink in moderation."
+    },
+    "dialog_about": {
+        "header": "Aboot",
+        "body": "dadf<b>aaa</b>",
+        "version": "Version (eh)",
+        "build_date": "Build Date (eh)"
+    },
+    "dialog_welcome": {
+        "header": "Welcome, eh!",
+        "body": "<p>Welcome to GoodDrinker! Please remember to always drink responsibly. This app is not meant to provide any medical or legal advice about how drunk you are, but instead only to keep track of how many drinks you've had and when your last drink was.</p><p>Please, be smart, <strong class='text-red'>never</strong> drink and drive. And if you're not old enough to drink, please close this app, you should <strong class='text-red'>not</strong> be drinking.</p><p>The developers of GoodDrinker are not liable for any good or bad decisions you make, or the outcome of those decisions.  Enjoy responsibility, eh!!</p>",
+        "button": "You betcha!"
+    },
+    "close": "Close, eh!",
+    "save": "Save, eh!"
+}

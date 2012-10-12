@@ -18,7 +18,7 @@
 // @codekit-append "../scripts-src/moment-1.7.0.min.js"
 // @codekit-append "../scripts-src/android-dt.js"
 // @codekit-append "../scripts-src/app.js"
-// @codekit-append "../scripts-src/en-us.js"
+// @codekit-append "../scripts-src/strings.js"
 // @codekit-append "../scripts-src/helpers.js"
 // @codekit-append "../scripts-src/analytics-android.js"
 // @codekit-append "../scripts-src/visibility-pg.js"

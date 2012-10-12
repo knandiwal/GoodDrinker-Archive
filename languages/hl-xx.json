@@ -1,0 +1,69 @@
+{
+    "language": "hl-xx",
+    "url": "/languages/hl-xx.json",
+    "language_name": "Pirate",
+    "language_version": 1,
+    "default_drink_name": "Drink",
+    "yes": "YES, arrrrgh",
+    "no": "NO, arrrrgh",
+    "soon": "SOON, arrrrgh",
+    "plenty_of_time": "a while",
+    "time_since_last_drink": "It's been <b>{{time}}</b> since your last drink",
+    "wait_until": "You should wait until at least <b>{{time}}</b>",
+    "drink_now": "Be smart, <b>always</b> drink responsibily.",
+    "hours": "hours",
+    "one_hour": "1 hour",
+    "action_buttons": {
+        "fast_add": "Fast Add",
+        "add": "Add",
+        "history": "History",
+        "settings": "Settings"
+    },
+    "switch_language_failed": {
+      "header": "Error",
+      "message": "Unable to get language pack."
+    },
+    "dialog_add": {
+        "header": "Add a drink",
+        "description": "Description",
+        "amount": "Amount",
+        "time": "Time",
+        "date": "Date"
+    },
+    "dialog_history": {
+        "header": "History",
+        "last24": "Last 24 hours",
+        "last48": "Last 48 hours",
+        "last72": "Last 72 hours",
+        "lastW": "Last week",
+        "lastM": "Last month",
+        "allTime": "All time"
+    },
+    "dialog_settings": {
+        "header": "Settings",
+        "time_between": "Time Between Drinks",
+        "default_drink_size": "Default Drink Size",
+        "default_description": "Default Description",
+        "clear_all": "Clear All Data",
+        "clear_all_button": "Erase",
+        "clear_msg": "This will delete all of your settings and is unrecoverable, are you sure?",
+        "clear_title": "Erase everying?",
+        "about": "About",
+        "about_button": "About",
+        "short_time_title": "Slow down!",
+        "short_time_msg": "Be smart, leave more time between drinks and drink in moderation."
+    },
+    "dialog_about": {
+        "header": "About",
+        "body": "",
+        "version": "Version",
+        "build_date": "Build Date"
+    },
+    "dialog_welcome": {
+        "header": "Welcome",
+        "body": "<p>Arh!</p><p>Welcome to GoodDrinker! Please remember to always drink responsibly. This app is not meant to provide any medical or legal advice about how drunk you are, but instead only to keep track of how many drinks you've had and when your last drink was.</p><p>Please, be smart, <strong class='text-red'>never</strong> drink and drive. And if you're not old enough to drink, please close this app, you should <strong class='text-red'>not</strong> be drinking.</p><p>The developers of GoodDrinker are not liable for any good or bad decisions you make, or the outcome of those decisions.  Enjoy responsibility!</p>",
+        "button": "I Got It!"
+    },
+    "close": "Close",
+    "save": "Save"
+}

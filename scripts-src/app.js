@@ -28,6 +28,8 @@ var GDrinker = Em.Application.create({
     $("#btnHistory").bind('click', GDrinker.ToggleHistoryDlg);
     $("#btnSettings").bind('click', GDrinker.ToggleSettingsDlg);
 
+    GDrinker.Languages.Init(GDrinker.Settings.Language);
+
   }
 });
 
@@ -36,6 +38,7 @@ GDrinker.BuildDate = "--BUILDDATE--";
 GDrinker.VersionCode = "--VERSIONCODE--";
 
 GDrinker.QuickAdd = function(evt) {
+  GDrinker.WarnTooFast();
   var item = {};
   item.time = Date.now();
   item.description = GDrinker.Settings.DrinkDescription;
@@ -107,10 +110,11 @@ GDrinker.GetFromLocalStore = function() {
     settings = {
       TimeBetweenDrinks: 60,
       DrinkSize: 2,
-      DrinkDescription: GDrinker.Strings.default_drink_name,
+      DrinkDescription: 'Drink',
       WarningForSoon: 54,
       FirstRun: true,
-      AutoRefreshRate: 1000
+      AutoRefreshRate: 1000,
+      Language: 'en-us'
     };
     localStorage.GDrinkerSettings = JSON.stringify(settings);
   } else {
@@ -122,6 +126,18 @@ GDrinker.GetFromLocalStore = function() {
       GDrinker.dataController.addItem(entry, false);
     });
   });
+};
+
+GDrinker.WarnTooFast = function() {
+  if (GDrinker.dataController.lastDrink !== null) {
+    var percent = GDrinker.dataController.get('elapsedTime').asMinutes() / GDrinker.Settings.TimeBetweenDrinks;
+    if (percent < 0.95) {
+      percent = Math.round(percent * 100);
+      GDrinker.Analytics.trackEvent("AddDrink", "TooFast", percent);
+      GDrinker.Helpers.alert(GDrinker.Strings.slow_down_msg,
+        GDrinker.Strings.slow_down_title, function() {});
+    }
+  }
 };
 
 GDrinker.dataController = Em.ArrayController.create({
@@ -212,7 +228,7 @@ GDrinker.dataController = Em.ArrayController.create({
       var elapsed = this.get('elapsedTime').asMinutes();
       if (elapsed > GDrinker.Settings.TimeBetweenDrinks) {
         return GDrinker.Strings.yes;
-      } else if (elapsed > GDrinker.Settings.WarningForSoon) {
+      } else if (elapsed > GDrinker.Settings.TimeBetweenDrinks * 0.95) {
         return GDrinker.Strings.soon;
       } else {
         return GDrinker.Strings.no;
@@ -282,10 +298,11 @@ GDrinker.StatusView = Em.View.extend({
       var since = "";
       if (eTime.days() >= 1) {
         since = eTime.humanize(false);
+        return new Handlebars.SafeString(result.replace("{{time}}", since));
       } else if (eTime.hours() > 1) {
-        since = eTime.hours() + " hours ";
+        since = eTime.hours() + " " + GDrinker.Strings.hours + " ";
       } else if (eTime.hours() === 1) {
-        since = " 1 hour ";
+        since = " " + GDrinker.Strings.one_hour + " ";
       }
       since += Math.floor(eTime.minutes()) + ":" + GDrinker.PadTime(eTime.seconds());
       result = result.replace("{{time}}", since);
@@ -309,37 +326,7 @@ GDrinker.StatusView = Em.View.extend({
       return new Handlebars.SafeString(GDrinker.Strings.drink_now);
     }
     return new Handlebars.SafeString(result);
-  }.property('GDrinker.dataController.timer'),
-  timeSince: function() {
-    if (GDrinker.dataController.lastDrink !== null) {
-      var eTime = GDrinker.dataController.get('elapsedTime');
-      var result = "";
-      if (eTime.days() >= 1) {
-        return eTime.humanize(false);
-      } else if (eTime.hours() > 1) {
-        result += eTime.hours() + " hours ";
-      } else if (eTime.hours() === 1) {
-        result += " 1 hour ";
-      }
-      result += Math.floor(eTime.minutes()) + ":" + GDrinker.PadTime(eTime.seconds());
-      return result;
-    } else {
-      return GDrinker.Strings.plenty_of_time;
-    }
-  }.property('GDrinker.dataController.timer'),
-  drinkAt: function() {
-    if (GDrinker.dataController.lastDrink !== null) {
-      if (GDrinker.dataController.get('canHaveAnother') === GDrinker.Strings.yes) {
-        return GDrinker.Strings.now;
-      } else {
-        var timeOfLastDrink = GDrinker.dataController.lastDrink.get('time');
-        var timeOfNextDrink = timeOfLastDrink + (GDrinker.Settings.TimeBetweenDrinks * 60 * 1000);
-        return "at " + moment(timeOfNextDrink).format("h:mm a");
-      }
-    } else {
-        return GDrinker.Strings.now;
-    }
-  }.property('GDrinker.dataController.canHaveAnother')
+  }.property('GDrinker.dataController.timer')
 });
 
 GDrinker.DrinkListView = Em.View.extend({
@@ -366,7 +353,10 @@ GDrinker.AboutView = Em.View.extend({
     $('#dlgSettings').removeClass("fadeDialog");
   },
   version: function() {
-    return GDrinker.Version;
+    return GDrinker.Version  + " (" + GDrinker.VersionCode +")";
+  }.property(),
+  build_date: function() {
+    return GDrinker.BuildDate;
   }.property()
 });
 
@@ -388,6 +378,12 @@ GDrinker.SettingsView = Em.View.extend({
 
     if (isValid) {
       GDrinker.Settings.TimeBetweenDrinks = $('#setTimeBetween').val();
+      var x = parseFloat(GDrinker.Settings.TimeBetweenDrinks);
+      if (x < 30) {
+        //GDrinker.Helpers.alert = function(msg, title, callback)
+        GDrinker.Helpers.alert(GDrinker.Strings.dialog_settings.short_time_msg,
+          GDrinker.Strings.dialog_settings.short_time_title, function() {});
+      }
       GDrinker.Settings.DrinkSize = $('#setDrinkSize').val();
       GDrinker.Settings.DrinkDescription = $('#setDesc').val();
       localStorage.GDrinkerSettings = JSON.stringify(GDrinker.Settings);
@@ -406,14 +402,14 @@ GDrinker.SettingsView = Em.View.extend({
     return GDrinker.Settings.DrinkDescription;
   }.property('GDrinker.dataController.dlgSettingsVisible'),
   clearAll: function() {
-    GDrinker.Helpers.confirm(GDrinker.Strings.clear_msg,
-      GDrinker.Strings.clear_title,
+    GDrinker.Helpers.confirm(GDrinker.Strings.dialog_settings.clear_msg,
+      GDrinker.Strings.dialog_settings.clear_title,
       function(butIndex) {
         if (butIndex === 2) {
+          GDrinker.Analytics.trackEvent("ClearSettings", "true");
           GDrinker.dataController.set('lastDrink', null);
           GDrinker.dataController.set('content', []);
           store.nuke();
-          GDrinker.Analytics.trackEvent("ClearSettings", "true");
         } else {
           GDrinker.Analytics.trackEvent("ClearSettings", "false");
         }
@@ -435,6 +431,7 @@ GDrinker.AddDrinkView = Em.View.extend({
       GDrinker.Helpers.ValidateDateInput("#addDate", true);
 
     if (isValid) {
+      GDrinker.WarnTooFast();
       var item = {};
       var datetime = $("#addDate").val() + " " + $("#addTime").val();
       item.time = moment(datetime, ["YYYY-MM-DD H:mm", "YYYY-MM-DD h:mm a", "YYYY-MM-DD h:mma"]).valueOf();

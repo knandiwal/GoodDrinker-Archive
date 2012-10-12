@@ -29,6 +29,12 @@ handlers:
   static_files: web-assets/favicon.ico
   upload: web-assets/favicon.ico
 
+- url: /languages/(.+\.json)
+  expiration: "0s"
+  mime_type: application/json
+  static_files: languages/\1
+  upload: /languages/(.*\.json)
+
 - url: /img
   static_dir: img
 

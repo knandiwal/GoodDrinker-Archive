@@ -36,6 +36,9 @@ sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
 sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     scripts/home.min.js > $DIR/scripts/home.min.js
+echo -Copying language files
+mkdir $DIR/languages
+cp -R languages/* $DIR/languages
 echo -Copying styles
 mkdir $DIR/styles
 cp -R styles/* $DIR/styles/

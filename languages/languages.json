@@ -1,0 +1,12 @@
+[
+  {
+    "language":"en-ca",
+    "language_name":"Canadian",
+    "url":"/languages/en-ca.json"
+  },
+  {
+    "language":"hl-xx",
+    "language_name":"Pirate",
+    "url":"/languages/hl-xx.json"
+  }
+]
