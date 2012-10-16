@@ -1,5 +1,5 @@
 application: gdrinkr
-version: 121004
+version: xxversioncodexx
 runtime: python27
 threadsafe: yes
 api_version: 1

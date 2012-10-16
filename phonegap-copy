@@ -3,11 +3,13 @@
 BUILDDATE=$(date)
 BUILDVERSION=`cat .version`
 VERSIONCODE=`cat .versioncode`
+APPENGINEVERSION=$(date +%y%m%d-%H%M)-$VERSIONCODE
 
 echo GoodDrinker PhoneGap Builder
 echo - Build Date:    $BUILDDATE
 echo - Build Version: $BUILDVERSION
 echo - Version Code:  $VERSIONCODE
+echo - AppEngine Ver: $APPENGINEVERSION
 echo 
 
 #WEB Version
@@ -17,6 +19,10 @@ echo Building Web Version
 echo Path: $DIR
 echo -Cleaning old version
 rm -rf $DIR/*
+echo -Copying \& updating app.yaml
+cp app.yaml $DIR/
+sed -e 's/xxversioncodexx/'"$APPENGINEVERSION"'/g' \
+    app.yaml > $DIR/app.yaml
 echo -Copying \& updating drinkr.html
 sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
@@ -47,7 +53,6 @@ mkdir $DIR/img
 cp -R img/* $DIR/img/
 echo -Copying website files
 cp 404.html $DIR/
-cp app.yaml $DIR/
 cp index.html $DIR/
 cp main.py $DIR/
 mkdir $DIR/web-assets
