@@ -13,8 +13,6 @@
 // @codekit-append "../scripts-src/bootstrap.min.js"
 // @codekit-append "../scripts-src/lawnchair-0.6.1.min.js"
 // @codekit-append "../scripts-src/moment-1.7.0.min.js"
-// @codekit-append "../scripts-src/fastclick.js"
-// @codekit-append "../scripts-src/fastclick-web.js"
 // @codekit-append "../scripts-src/app.js"
 // @codekit-append "../scripts-src/strings.js"
 // @codekit-append "../scripts-src/helpers.js"
