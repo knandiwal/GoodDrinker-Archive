@@ -3,6 +3,14 @@
 var GDrinker = GDrinker || {};
 GDrinker.Helpers = {};
 
+GDrinker.Helpers.PadTime = function(val) {
+  if (val <= 9) {
+    return "0" + val.toString();
+  } else {
+    return val.toString();
+  }
+};
+
 GDrinker.Helpers.confirm = function(msg, title, callback) {
   if (navigator.notification && navigator.notification.confirm) {
     navigator.notification.confirm(msg, callback, title, "Cancel,OK");

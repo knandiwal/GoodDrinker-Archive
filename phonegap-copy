@@ -3,14 +3,18 @@
 BUILDDATE=$(date)
 BUILDVERSION=`cat .version`
 VERSIONCODE=`cat .versioncode`
-APPENGINEVERSION=$(date +%y%m%d-%H%M)-$VERSIONCODE
+APPENGINEVERSION=$VERSIONCODE--$(date +%y%m%d-%H%M)
+#IOSAPPID=0
+IOSAPPSTORELINK="\<meta name=\'apple-itunes-app\' content=\'$IOSAPPID\'\/\>"
+IOSAPPSTORELINK=""
 
 echo GoodDrinker PhoneGap Builder
 echo - Build Date:    $BUILDDATE
 echo - Build Version: $BUILDVERSION
 echo - Version Code:  $VERSIONCODE
 echo - AppEngine Ver: $APPENGINEVERSION
-echo 
+echo - iOSApp Store Link: $IOSAPPSTORELINK
+echo
 
 #WEB Version
 DIR=../../PhoneGap/GoodDrinker/www
@@ -23,10 +27,16 @@ echo -Copying \& updating app.yaml
 cp app.yaml $DIR/
 sed -e 's/xxversioncodexx/'"$APPENGINEVERSION"'/g' \
     app.yaml > $DIR/app.yaml
+echo -Copying \& updating index.html
+sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    -e 's/<!-- iOSAppStoreLink -->/'"$IOSAPPSTORELINK"'/g' \
+    index.html > $DIR/index.html
 echo -Copying \& updating drinkr.html
 sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     -e 's/no-cache.appcache/'"$MANIFESTFILE"'/g' \
+    -e 's/<!-- iOSAppStoreLink -->/'"$IOSAPPSTORELINK"'/g' \
     drinkr.html > $DIR/drinkr.html
 echo -Copying \& updating Manifest file \[$MANIFESTFILE\]
 sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
@@ -53,7 +63,6 @@ mkdir $DIR/img
 cp -R img/* $DIR/img/
 echo -Copying website files
 cp 404.html $DIR/
-cp index.html $DIR/
 cp main.py $DIR/
 mkdir $DIR/web-assets
 cp -R web-assets/* $DIR/web-assets/
@@ -71,6 +80,7 @@ sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     -e 's/ manifest=\"no-cache.appcache\"//g' \
     -e 's/app-web.min.js/app-ios.min.js/g' \
+    -e 's/<!-- iOSAppStoreLink -->//g' \
     drinkr.html > $DIR/drinkr.html
 echo -Copying \& updating scripts
 mkdir $DIR/scripts
@@ -109,6 +119,7 @@ sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     -e 's/ manifest=\"no-cache.appcache\"//g' \
     -e 's/app-web.min.js/app-android.min.js/g' \
+    -e 's/<!-- iOSAppStoreLink -->//g' \
     drinkr.html > $DIR/drinkr.html
 echo -Copying \& updating scripts
 mkdir $DIR/scripts
