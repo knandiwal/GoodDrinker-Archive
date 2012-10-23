@@ -1,5 +1,5 @@
 <!DOCTYPE html> 
-<html manifest="no-cache.appcache">
+<html ng-app="GDrinker" manifest="no-cache.appcache">
   <head>
     <meta charset="UTF-8">
     <title>GoodDrinker</title>
@@ -19,45 +19,40 @@
     <link rel="stylesheet" href="styles/custom.css">
   </head> 
 
-  <body> 
-    <script type="text/x-handlebars">
-      {{#view GDrinker.StatusView}}
-        <h1>{{message}}</h1>
-        <div>{{time_since}}</div>
-        <div>{{wait_until}}</div>
-      {{/view}}
-    </script>
+  <body ng-controller="GDrinker.AppController"> 
 
-    <script type="text/x-handlebars">
-      <table id="drinkList" class="table-striped">
-        <tbody>
-          {{#each GDrinker.dataController}}
-            {{#view GDrinker.DrinkListView contentBinding="this"}}
-                <td class="small"><img src="img/wine.png"></td>
-                <td><h3>{{content.description}}</h3>{{drinkTime}}</td>
-                <td class="small"><span class="badge">{{content.amount}}</span></td>
-                <td class="small"><button {{action remove}} class="btn"><i class="icon-remove-sign icon-large"></i></button></td>
-            {{/view}}
-          {{/each}}
-        </tbody>
-      </table>
-    </script>
+    <header class="alert {{status.cssClass}}" ng-controller="GDrinker.HeaderController">
+      <h1 ng-bind-html-unsafe="status.message" ng-bind-html="html"></h1>
+      <div ng-bind-html-unsafe="status.time_since"></div>
+      <div ng-bind-html-unsafe="status.wait_until"></div>
+    </header>
+
+    <table id="drinkList" class="table-striped" ng-controller="GDrinker.DrinkList">
+      <tbody>
+        <tr ng-repeat="drink in drinks.all | orderBy:predicate:reverse | limitTo:20" >
+          <td class="small"><img src="img/wine.png"></td>
+          <td><h3>{{drink.description}}</h3>{{drink.time | date:'h:mm:ss a on MMM d, yyyy'}}</td>
+          <td class="small"><span class="badge">{{drink.amount}}</span></td>
+          <td class="small"><button ng-click="removeDrink(this)" class="btn"><i class="icon-remove-sign icon-large"></i></button></td>
+        </tr>
+      </tbody>
+    </table>
     
-    <footer id="footerBar">
+    <footer id="footerBar" ng-controller="GDrinker.FooterController">
       <div class="navbar navbar-fixed-bottom">
         <div class="navbar-inner">
           <div class="container-fluid">
             <div class="btn-group">
-              <button id="btnQuickAdd" class="btn btn-inverse">
+              <button id="btnQuickAdd" class="btn btn-inverse" ng-click="fastAdd()">
                 <i class="icon-plus-sign icon-large"></i><br><span id="strButFastAdd">Fast Add</span>
               </button>
-              <button id="btnAdd" class="btn btn-inverse">
+              <button id="btnAdd" class="btn btn-inverse" ng-click="showAdd()">
                 <i class="icon-plus icon-large"></i><br><span id="strButAdd">Add</span>
               </button>
-              <button id="btnHistory" class="btn btn-inverse">
+              <button id="btnHistory" class="btn btn-inverse" ng-click="showHistory()">
                 <i class="icon-dashboard icon-large"></i><br><span id="strButHistory">History</span>
               </button>
-              <button id="btnSettings" class="btn btn-inverse">
+              <button id="btnSettings" class="btn btn-inverse" ng-click="showSettings()">
                 <i class="icon-cogs icon-large"></i><br><span id="strButSettings">Settings</span>
               </button>
             </div>
@@ -66,8 +61,7 @@
       </div>
     </footer>
 
-    <script type="text/x-handlebars">
-    {{#view GDrinker.AddDrinkView id="dlgAddDrink"}}
+    <div id="dlgAddDrink" class="modal hide" ng-controller="GDrinker.AddDialogController">
       <div class="modal-header">
         <button type="button" {{action close}} class="close">&times;</button>
         <h3 id="strDlgAddHeader">Add a drink</h3>
@@ -77,25 +71,25 @@
           <div class="control-group">
             <label class="control-label" id="strDlgAddDesc" for="addDesc">Description</label>
             <div class="controls">
-              {{view GDrinker.RequiredTextInput type="text" name="addDesc" id="addDesc" class="spanMiniModal" placeholder="Type something..." valueBinding="drinkDescription"}}
+              <input required type="text" name="addDesc" id="addDesc" class="spanMiniModal" placeholder="Type something..." valueBinding="drinkDescription">
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" id="strDlgAddAmount" for="addAmount">Amount</label>
             <div class="controls">
-              {{view GDrinker.NumberInput type="number" min="0.25" step="0.25" name="addAmount" id="addAmount" class="spanMiniModal" placeholder="2" valueBinding="drinkSize"}}
+              <input required type="number" min="0.25" step="0.25" name="addAmount" id="addAmount" class="spanMiniModal" placeholder="2" valueBinding="drinkSize">
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" id="strDlgAddTime" for="addTime">Time</label>
             <div class="controls">
-              {{view GDrinker.TimeInput type="time" name="addTime" id="addTime" class="spanMiniModal clickevent" placeholder="4:00 pm" valueBinding="currentTime"}}
+              <input required type="time" name="addTime" id="addTime" class="spanMiniModal clickevent" placeholder="4:00 pm" valueBinding="currentTime">
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" id="strDlgAddDate" for="addDate">Date</label>
             <div class="controls">
-              {{view GDrinker.DateInput type="date" name="addDate" id="addDate" class="spanMiniModal clickevent" placeholder="mm/dd/yyyy" valueBinding="currentDate"}}
+              <input required type="date" name="addDate" id="addDate" class="spanMiniModal clickevent" placeholder="mm/dd/yyyy" valueBinding="currentDate">
             </div>
           </div>
         </form>
@@ -104,11 +98,9 @@
         <button {{action close}} type="button" class="btn strButClose">Close</button>
         <button {{action save}} type="button" class="btn btn-primary strButSave">Save changes</button>
       </div>
-    {{/view}}
-    </script>
+    </div>
 
-    <script type="text/x-handlebars">
-    {{#view GDrinker.SettingsView id="dlgSettings"}}
+    <div id="dlgSettings" class="modal hide">
       <div class="modal-header">
         <button type="button" {{action close}} class="close">&times;</button>
         <h3 id="strDlgSettingsHeader">Settings</h3>
@@ -118,19 +110,19 @@
           <div class="control-group">
             <label class="control-label" id="strDlgSettingsTimeBetween" for="setTimeBetween">Time Between Drinks</label>
             <div class="controls">
-              {{view GDrinker.NumberInput type="number" name="setTimeBetween" id="setTimeBetween" min="1" class="spanMiniModal" placeholder="Time Between Drinks" valueBinding="timeBetween"}}
+              <input required type="number" name="setTimeBetween" id="setTimeBetween" min="1" class="spanMiniModal" placeholder="Time Between Drinks" valueBinding="timeBetween"
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" id="strDlgSettingsDrinkSize" for="setDrinkSize">Default Drink Size</label>
             <div class="controls">
-              {{view GDrinker.NumberInput type="number" min="0.25" step="0.25" class="spanMiniModal" id="setDrinkSize" name="setDrinkSize" placeholder="Drink size" valueBinding="drinkSize"}}
+              <input required type="number" min="0.25" step="0.25" class="spanMiniModal" id="setDrinkSize" name="setDrinkSize" placeholder="Drink size" valueBinding="drinkSize">
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" id="strDlgSettingsDescription" for="setDesc">Default Description</label>
             <div class="controls">
-              {{view GDrinker.RequiredTextInput type="text" name="setDesc" id="setDesc" class="spanMiniModal" placeholder="Type something..." valueBinding="drinkDescription"}}
+              <input required type="text" name="setDesc" id="setDesc" class="spanMiniModal" placeholder="Type something..." valueBinding="drinkDescription">
             </div>
           </div>
           <div class="control-group hide" id="setLangGroup">
@@ -166,11 +158,9 @@
         <button {{action close}} type="button" class="btn strButClose">Close</button>
         <button {{action save}} type="button" class="btn btn-primary strButSave">Save changes</button>
       </div>
-    {{/view}}
-    </script>
+    </div>
 
-    <script type="text/x-handlebars">
-    {{#view GDrinker.HistoryView id="dlgHistory"}}
+    <div id="dlgHistory" class="modal hide">
       <div class="modal-header">
         <button {{action close}} type="button" class="close">&times;</button>
         <h3 id="strDlgHistoryHeader">History</h3>
@@ -221,8 +211,7 @@
       <div class="modal-footer">
         <button {{action close}} type="button" class="btn btn-primary strButClose">Close</button>
       </div>
-    {{/view}}
-    </script>
+    </div>
 
     <div class="modal hide" id="dlgFirstRun">
       <div class="modal-header">
@@ -251,8 +240,7 @@
       </div>
     </div>
 
-    <script type="text/x-handlebars">
-    {{#view GDrinker.AboutView id="dlgAbout"}}
+    <div id="dlgAbout" class="modal hide">
       <div class="modal-header">
         <button {{action close}} type="button" class="close">&times;</button>
         <h3><span id="strDlgAboutHeader">About</span></h3>
@@ -269,9 +257,8 @@
       <div class="modal-footer">
         <button {{action close}} type="button" class="btn btn-primary strButClose">Close</button>
       </div>
-    {{/view}}
-    </script>
+    </div>
 
-    <script type="text/javascript" src="scripts/app-web.min.js"></script>
+    <script type="text/javascript" src="scripts/app-angular.min.js"></script>
   </body>
 </html>

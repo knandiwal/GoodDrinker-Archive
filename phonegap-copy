@@ -3,7 +3,8 @@
 BUILDDATE=$(date)
 BUILDVERSION=`cat .version`
 VERSIONCODE=`cat .versioncode`
-APPENGINEVERSION=$VERSIONCODE--$(date +%y%m%d-%H%M)
+BUILDTYPE="UNSET"
+APPENGINEVERSION=$VERSIONCODE-$(date +%y%m%d-%H%M)
 #IOSAPPID=0
 IOSAPPSTORELINK="\<meta name=\'apple-itunes-app\' content=\'$IOSAPPID\'\/\>"
 IOSAPPSTORELINK=""
@@ -17,9 +18,10 @@ echo - iOSApp Store Link: $IOSAPPSTORELINK
 echo
 
 #WEB Version
+BUILDTYPE="WEB"--$APPENGINEVERSION
 DIR=../../PhoneGap/GoodDrinker/www
 MANIFESTFILE=$(date +%Y%m%d-%S).appcache
-echo Building Web Version
+echo Building $BUILDTYPE Version
 echo Path: $DIR
 echo -Cleaning old version
 rm -rf $DIR/*
@@ -28,28 +30,98 @@ cp app.yaml $DIR/
 sed -e 's/xxversioncodexx/'"$APPENGINEVERSION"'/g' \
     app.yaml > $DIR/app.yaml
 echo -Copying \& updating index.html
-sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     -e 's/<!-- iOSAppStoreLink -->/'"$IOSAPPSTORELINK"'/g' \
     index.html > $DIR/index.html
 echo -Copying \& updating drinkr.html
-sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     -e 's/no-cache.appcache/'"$MANIFESTFILE"'/g' \
     -e 's/<!-- iOSAppStoreLink -->/'"$IOSAPPSTORELINK"'/g' \
     drinkr.html > $DIR/drinkr.html
 echo -Copying \& updating Manifest file \[$MANIFESTFILE\]
-sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     manifest.appcache > $DIR/$MANIFESTFILE
 echo -Copying \& updating scripts
 mkdir $DIR/scripts
-sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     scripts/app-web.min.js > $DIR/scripts/app-web.min.js
-sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    scripts/home.min.js > $DIR/scripts/home.min.js
+echo -Copying language files
+mkdir $DIR/languages
+cp -R languages/* $DIR/languages
+echo -Copying styles
+mkdir $DIR/styles
+cp -R styles/* $DIR/styles/
+echo -Copying images
+mkdir $DIR/img
+cp -R img/* $DIR/img/
+echo -Copying website files
+cp 404.html $DIR/
+cp main.py $DIR/
+mkdir $DIR/web-assets
+cp -R web-assets/* $DIR/web-assets/
+echo Completed.
+echo
+
+#Angular Version
+DIR=../../PhoneGap/GoodDrinker/Angular
+BUILDTYPE="ANGULAR"
+MANIFESTFILE=$(date +%Y%m%d-%S).appcache
+echo Building $BUILDTYPE Version
+echo Path: $DIR
+echo -Cleaning old version
+rm -rf $DIR/*
+echo -Copying \& updating app.yaml
+cp app.yaml $DIR/
+sed -e 's/xxversioncodexx/'"$APPENGINEVERSION"'/g' \
+    app.yaml > $DIR/app.yaml
+echo -Copying \& updating index.html
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    -e 's/<!-- iOSAppStoreLink -->/'"$IOSAPPSTORELINK"'/g' \
+    index.html > $DIR/index.html
+echo -Copying \& updating drinkr.html
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    -e 's/no-cache.appcache/'"$MANIFESTFILE"'/g' \
+    -e 's/<!-- iOSAppStoreLink -->/'"$IOSAPPSTORELINK"'/g' \
+    angular.html > $DIR/drinkr.html
+echo -Copying \& updating Manifest file \[$MANIFESTFILE\]
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    manifest.appcache > $DIR/$MANIFESTFILE
+echo -Copying \& updating scripts
+mkdir $DIR/scripts
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+    scripts-angular/app-angular.min.js > $DIR/scripts/app-angular.min.js
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     scripts/home.min.js > $DIR/scripts/home.min.js
 echo -Copying language files
@@ -71,12 +143,15 @@ echo
 
 #iOS Version
 DIR=../../PhoneGap/GoodDrinker/iOS/www
-echo Building iOS Version
+BUILDTYPE="iOS"
+echo Building $BUILDTYPE Version
 echo -Path: $DIR
 echo -Cleaning old version
 rm -rf $DIR/*
 echo -Copying \& updating drinkr.html
-sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     -e 's/ manifest=\"no-cache.appcache\"//g' \
     -e 's/app-web.min.js/app-ios.min.js/g' \
@@ -84,9 +159,10 @@ sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     drinkr.html > $DIR/drinkr.html
 echo -Copying \& updating scripts
 mkdir $DIR/scripts
-sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
-    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     scripts/app-ios.min.js > $DIR/scripts/app-ios.min.js
 echo -Copying styles
 mkdir $DIR/styles
@@ -110,12 +186,15 @@ echo
 
 #Android Version
 DIR=../../PhoneGap/GoodDrinker/Android/assets/www
-echo Building Android Version
+BUILDTYPE="ANDROID"
+echo Building $BUILDTYPE Version
 echo -Path: $DIR
 echo -Cleaning old version
 rm -rf $DIR/*
 echo -Copying \& updating drinkr.html
-sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
+    -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
     -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     -e 's/ manifest=\"no-cache.appcache\"//g' \
     -e 's/app-web.min.js/app-android.min.js/g' \
@@ -123,9 +202,10 @@ sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     drinkr.html > $DIR/drinkr.html
 echo -Copying \& updating scripts
 mkdir $DIR/scripts
-sed -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
-    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
+sed -e 's/--BUILDTYPE--/'"$BUILDTYPE"'/g' \
+    -e 's/--BUILDDATE--/'"$BUILDDATE"'/g' \
     -e 's/--VERSIONCODE--/'"$VERSIONCODE"'/g' \
+    -e 's/--BUILDVERSION--/'"$BUILDVERSION"'/g' \
     scripts/app-android.min.js > $DIR/scripts/app-android.min.js
 echo -Copying styles
 mkdir $DIR/styles
